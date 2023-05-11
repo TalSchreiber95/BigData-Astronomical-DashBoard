@@ -1,0 +1,24 @@
+{
+  "name": "redis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon -L server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "http": "^0.0.1-security",
+    "ioredis-json": "^0.1.1",
+    "node-rdkafka": "^2.14.0",
+    "nodemon": "^2.0.20",
+    "redis": "^4.5.1",
+    "socket.io": "^4.5.4"
+  }
+}
