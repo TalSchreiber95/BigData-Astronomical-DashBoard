@@ -11,13 +11,14 @@ const consumer = new KafkaConsumer({
   debug: "generic,broker,security",
 });
 
-const topic = process.env.CLOUDKARAFKA_TOPIC;
+const ordersTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "orders";
+const eventsTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "events";
 
 consumer.connect();
 consumer
   .on("ready", (arg) => {
-    consumer.subscribe([topic]).consume();
-    console.log(`Consumer ${arg.name} ready. topics: ${topic}`);
+    consumer.subscribe([ordersTopic]).consume();
+    console.log(`Consumer ${arg.name} ready. topics: ${ordersTopic}`);
   })
   .on("disconnected", (arg) =>
     console.log(`Consumer ${arg.name} disconnected.`)

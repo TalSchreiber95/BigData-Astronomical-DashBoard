@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.json({ message: " hello from Orders Simulator" });
+  res.json({ message: " hello from Events Simulator" });
 });
 
 app.use("/api", routes.routes);

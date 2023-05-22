@@ -42,7 +42,7 @@ Toppings.forEach((topping) => {
   toppings[topping] = 0;
 });
 
-let data= {
+let originalData= {
   "Today's Orders": 0,
   "Total Open Orders": 0,
   "Average Handle Time": 0,

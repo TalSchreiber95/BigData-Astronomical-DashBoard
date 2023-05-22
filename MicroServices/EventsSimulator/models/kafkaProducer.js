@@ -14,6 +14,7 @@ const kafkaConfig = {
 
 const ordersTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "orders";
 const eventsTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "events";
+
 const producer = new Kafka.Producer(kafkaConfig);
 
 producer.connect();

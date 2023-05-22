@@ -8,7 +8,7 @@ const cors = require("cors");
 const PORT = process.env.PORT || 4001;
 const redis = require("./models/Redis.js");
 const kafkaConsumer = require("./models/kafkaConsumer.js");
-const { processData, processEvents } = require("./models/DataProcessor");
+const { processData, processEvents } = require("./controllers/DataProcessor.js");
 const { log } = require("console");
 
 app.use(cors({}));
@@ -19,29 +19,29 @@ const io = new Server(server, { cors: {} });
 
 io.on("connection", async (socket) => {
   console.log(`User Connected: ${socket.id}`);
-  let ordersData = await redis.json.GET("orders_data");
+  let ordersData = await redis.json.GET("events_data");
   console.log(ordersData);
-  io.emit("orders_data", ordersData);
+  io.emit("events_data", ordersData);
 });
 
 kafkaConsumer.on("data", async (msg) => {
-  console.log("asdsadsdsa")
-  let ordersData = await redis.json.GET("orders_data");
+  console.log("data caught")
+  let ordersData = await redis.json.GET("events_data");
   try {
     let newOrder = JSON.parse(msg.value);
     console.log(newOrder);
     if (newOrder.topic == "orders") {
       ordersData = processData(ordersData, newOrder);
-      await redis.json.SET("orders_data", "$", ordersData);
+      await redis.json.SET("events_data", "$", ordersData);
     } else {
       ordersData = processEvents(ordersData, newOrder);
-      await redis.json.SET("orders_data", "$", ordersData);
+      await redis.json.SET("events_data", "$", ordersData);
     }
   } catch (error) {
     console.error(error);
   }
 
-  io.emit("orders_data", ordersData);
+  io.emit("events_data", ordersData);
 });
 
 server.listen(PORT, () => {

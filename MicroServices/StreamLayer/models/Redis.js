@@ -22,13 +22,13 @@ redis
 
 (async () => {
   await redis.connect();
-  if (await redis.exists("orders_data")) {
-    const ordersData = await redis.json.GET("orders_data");
+  if (await redis.exists("events_data")) {
+    const ordersData = await redis.json.GET("events_data");
     console.log("aaa",ordersData);
   } else {
-    redis.json.SET("orders_data", "$", initialData);
+    redis.json.SET("events_data", "$", initialData);
     const expireToday = parseInt(new Date().setHours(23, 59, 59, 999) / 1000);
-    redis.EXPIREAT("orders_data", expireToday);
+    redis.EXPIREAT("events_data", expireToday);
     console.log("Data Initialized");
   }
 })();

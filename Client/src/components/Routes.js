@@ -28,7 +28,7 @@ export default function Routes() {
   }, []);
 
   useEffect(() => {
-    socket.on("orders_data", (res) => {
+    socket.on("events_data", (res) => {
       console.log(res);
       setData(res);
     });
@@ -46,7 +46,12 @@ export default function Routes() {
         setOrders(res.data);
         setSearchLoaded(true);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        setOrders({
+          message: "Something went wrong, please contact with developer teams!",
+        });
+        console.error(err);
+      });
   };
 
   const buildModel = async (query) => {
@@ -60,7 +65,12 @@ export default function Routes() {
         console.log(res.data);
         setAssociationRules(res.data);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        setAssociationRules({
+          message: "Something went wrong, please contact with developer teams!",
+        });
+        console.error(err);
+      });
   };
 
   return useRoutes([
@@ -99,7 +109,7 @@ export default function Routes() {
     },
     {
       path: "/",
-      children: [{ path: "/", element: <Navigate to='/dashboard/main' /> }],
+      children: [{ path: "/", element: <Navigate to="/dashboard/main" /> }],
     },
   ]);
 }
