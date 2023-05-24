@@ -19,6 +19,21 @@ const Order = mongoose.model(
   })
 );
 
+// AstroEvent model
+const AstroEvent = mongoose.model(
+  "AstroEvent",
+  Schema({
+    event_id: Number,
+    telescope: String,
+    date: Date,
+    time: String,
+    ra: Number, // 0-24 hours might be better as string 6.75 = 6h 45m
+    dec: Number, // degrees such as -16.7167 = -16° 43
+    eventType: String, // can have multiple consequences
+    urgency: Number, // between 1-5
+  })
+);
+
 // Connection
 const url = process.env.MONGO_URL;
 mongoose.connect(url, {

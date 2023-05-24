@@ -1,5 +1,9 @@
 const kafkaProducer = require("../models/kafkaProducer");
-const { generateOrder, generateBranchEvent } = require("../models/simulator");
+const {
+  generateOrder,
+  generateBranchEvent,
+  generateAstroEvent,
+} = require("../models/simulator");
 let interval1 = -1;
 let interval2 = -1;
 let ordersRate = 2;
@@ -22,7 +26,7 @@ const startSimulator = (req, res) => {
   }, ordersRate * 1000);
 
   interval2 = setInterval(() => {
-  kafkaProducer.publish(generateBranchEvent(), "events");
+    kafkaProducer.publish(generateBranchEvent(), "events");
   }, eventsRate * 1000);
 
   status = `Simulator is Running.
