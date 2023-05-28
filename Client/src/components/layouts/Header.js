@@ -17,13 +17,14 @@ const Header = () => {
 
   return (
     <AppBar
-      position='fixed'
+      position="fixed"
       sx={{
         // backgroundImage:
         //   "radial-gradient( circle farthest-corner at 22.4% 21.7%, rgba(4,189,228,1) 0%, rgba(2,83,185,1) 100.2% )",
         bgcolor: "#353839",
         height: "6%",
-      }}>
+      }}
+    >
       <Toolbar sx={{ m: -0.75 }}>
         <Icon
           icon={"material-symbols:dashboard"}
@@ -31,15 +32,16 @@ const Header = () => {
           width={30}
           style={{ marginRight: 12 }}
         />
-        <Typography variant='h5' component='div' sx={{ flexGrow: 1 }}>
-          Pizza DashBoard
+        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+          Astronomical DashBoard
         </Typography>
         <Button
           sx={[
             { bgcolor: "transparent", color: "white" },
             { "&:hover": { bgcolor: "white", color: "black" } },
           ]}
-          onClick={handleClickOpen}>
+          onClick={handleClickOpen}
+        >
           Simulator Controller
         </Button>
         <SimulatorControl open={open} setOpen={setOpen} />

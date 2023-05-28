@@ -1,15 +1,19 @@
 import React from "react";
 import { Grid, Typography } from "@mui/material";
+import GenericTable from "../genericComponents/GenericTable";
 import Page from "./Page";
 import CounterDetails from "../dataViews/CounterDetails";
 import ChartDetails from "../dataViews/ChartDetails";
 import { ChartDetailsConfig } from "../config/charts";
 import { CounterDetailsConfig } from "../config/counters";
-
+import { neoTableObject } from "../config/neoTableObject";
 const Dashboard = ({ data }) => {
+  const isImportent=(row)=>{
+    return row["Potentially Hazardous"]==="Yes"
+  }
   return (
-    <Page title='Dashboard'>
-      <Typography sx={{ py: 2 }} variant='h6'>
+    <Page title="Dashboard">
+      <Typography sx={{ py: 2 }} variant="h6">
         Today's Statistics:
       </Typography>
       <Grid container spacing={3}>
@@ -38,6 +42,9 @@ const Dashboard = ({ data }) => {
             </Grid>
           );
         })}
+        <Grid item xs={12} sm={12} md={12} lg={12} xl={12} sx={{ mt: 3 }}>
+          <GenericTable tableObject={neoTableObject} isImportent={isImportent}/>
+        </Grid>
       </Grid>
     </Page>
   );

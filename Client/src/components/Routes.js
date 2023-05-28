@@ -30,7 +30,7 @@ export default function Routes() {
   useEffect(() => {
     socket.on("events_data", (res) => {
       console.log(res);
-      setData(res);
+      // setData(res);
     });
   }, [socket]);
 
