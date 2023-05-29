@@ -1,11 +1,10 @@
 #!/bin/bash
 
-read -p "Enter the path to folder 1: " folder1
-read -p "Enter the path to folder 2: " folder2
-read -p "Enter the path to folder 3: " folder3
-read -p "Enter the path to folder 4: " folder4
-read -p "Enter the path to the client-side folder: " clientFolder
-read -p "Enter the path to the BigData-Astronomical-DashBoard folder: " serverFolder
+current_dir=$(pwd)
+folder1="$current_dir/MicroServices/BatchLayer"
+folder2="$current_dir/MicroServices/StreamLayer"
+folder3="$current_dir/MicroServices/UniverseSimulator"
+clientFolder="$current_dir/Client"
 
 # Start npm start commands in different folders
 cd "$folder1"
@@ -17,54 +16,16 @@ npm start &
 cd "$folder3"
 npm start &
 
-cd "$folder4"
+cd "$clientFolder"
 npm start &
 
 # Build Docker images for each microservice
-# docker build -t client-side "$clientFolder/client"
-# docker build -t universe-simulator "$serverFolder/MicroServices/UniverseSimulator"
+# docker build "$folder1"
+# docker build "$folder2"
 
 # Start Docker containers for each microservice
-docker run -d --name client-container client-side
-docker run -d --name universe-container universe-simulator
+docker compose up $folder1
+docker compose up $folder2
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#!/bin/bash
-
-# # Start npm start commands in different folders
-# cd C:\Users\DorYaakobi\VSCodeProjects\BigData-Astronomical-DashBoard\Client
-# npm start &
-
-# cd /path/to/folder2
-# npm start &
-
-# cd /path/to/folder3
-# npm start &
-
-# cd /path/to/folder4
-# npm start &
-
-# # Build Docker images for each microservice
-# docker build -t client-side ./BigData-Astronomical-DashBoard/client
-# docker build -t universe-simulator ./BigData-Astronomical-DashBoard/MicroServices/UniverseSimulator
-
-# # Start Docker containers for each microservice
-# docker run -d --name client-container client-side
-# docker run -d --name universe-container universe-simulator
-
+# chmod +x run_microservices.sh
