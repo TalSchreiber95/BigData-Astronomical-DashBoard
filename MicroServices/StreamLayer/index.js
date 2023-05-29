@@ -15,13 +15,15 @@ app.use(cors({}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const eventsTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "events";
+
 const io = new Server(server, { cors: {} });
 
 io.on("connection", async (socket) => {
   console.log(`User Connected: ${socket.id}`);
-  let ordersData = await redis.json.GET("events_data");
-  console.log(ordersData);
-  io.emit("events_data", ordersData);
+  let eventsData = await redis.json.GET("events_data");
+  console.log("eventsData: ",eventsData);
+  io.emit("events_data", eventsData);
 });
 
 kafkaConsumer.on("data", async (msg) => {
@@ -29,8 +31,9 @@ kafkaConsumer.on("data", async (msg) => {
   let eventsData = await redis.json.GET("events_data");
   try {
     let newEvent = JSON.parse(msg.value);
-    console.log(newEvent);
-    if (newEvent.topic == "events") {
+    // console.log("newEvent: ",newEvent);
+    if (msg.topic == eventsTopic) {
+      // console.log(newEvent);
       eventsData = processData(eventsData, newEvent);
       await redis.json.SET("events_data", "$", eventsData);
     }

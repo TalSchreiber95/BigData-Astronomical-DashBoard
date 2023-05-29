@@ -10,30 +10,32 @@ const processData = (eventsData, newEvent) => {
 };
 
 const eventCounters = (eventsData, newEvent) => {
-  eventsData["Today's Events"]++;
-  eventsData["Total of close asteroids (monthly)"]++; // need to inrement by the neo astro api 
-  eventsData["Total of close asteroids (daily)"]++; // need to inrement by the neo astro api 
+  eventsData["Today's Events"]++
+  eventsData["Total of close asteroids (monthly)"]++ // need to inrement by the neo astro api 
+  eventsData["Total of close asteroids (daily)"]++ // need to inrement by the neo astro api 
   return eventsData;
 };
 
 
 const eventDistributions = (eventsData, newEvent) => {
+  console.log("eventsData: ",eventsData)
+  console.log("newEvent: ",newEvent)
   switch(newEvent["Event Type"])
   {
     case "GRB":
-      eventsData["Events Distribution"][0]++;
+      eventsData["Events Distribution"].series[0].data[0]++;
       break;
     case "Rise Brightness Apparent":
-      eventsData["Events Distribution"][1]++;
+      eventsData["Events Distribution"].series[0].data[1]++;
       break;
     case "UV (Rise UV)":
-      eventsData["Events Distribution"][2]++;
+      eventsData["Events Distribution"].series[0].data[2]++;
       break;
     case "Rise Ray-X":
-      eventsData["Events Distribution"][3]++;
+      eventsData["Events Distribution"].series[0].data[3]++;
       break;
     case "Comet":
-      eventsData["Events Distribution"][4]++;
+      eventsData["Events Distribution"].series[0].data[4]++;
       break;
   }
   return eventsData;
