@@ -26,22 +26,24 @@ io.on("connection", async (socket) => {
 
 kafkaConsumer.on("data", async (msg) => {
   console.log("data caught")
-  let ordersData = await redis.json.GET("events_data");
+  let eventsData = await redis.json.GET("events_data");
   try {
-    let newOrder = JSON.parse(msg.value);
-    console.log(newOrder);
-    if (newOrder.topic == "orders") {
-      ordersData = processData(ordersData, newOrder);
-      await redis.json.SET("events_data", "$", ordersData);
-    } else {
-      ordersData = processEvents(ordersData, newOrder);
-      await redis.json.SET("events_data", "$", ordersData);
+    let newEvent = JSON.parse(msg.value);
+    console.log(newEvent);
+    if (newEvent.topic == "events") {
+      eventsData = processData(eventsData, newEvent);
+      await redis.json.SET("events_data", "$", eventsData);
     }
+    // else {
+
+    //   ordersData = processEvents(ordersData, newOrder);
+    //   await redis.json.SET("events_data", "$", ordersData);
+    // }
   } catch (error) {
     console.error(error);
   }
 
-  io.emit("events_data", ordersData);
+  io.emit("events_data", eventsData);
 });
 
 server.listen(PORT, () => {

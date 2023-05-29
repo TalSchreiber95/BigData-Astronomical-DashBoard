@@ -6,11 +6,14 @@ import CounterDetails from "../dataViews/CounterDetails";
 import ChartDetails from "../dataViews/ChartDetails";
 import { ChartDetailsConfig } from "../config/charts";
 import { CounterDetailsConfig } from "../config/counters";
-import { neoTableObject } from "../config/neoTableObject";
 const Dashboard = ({ data }) => {
-  const isImportent=(row)=>{
-    return row["Potentially Hazardous"]==="Yes"
+  const isImportentNeo = (row) => {
+    return row["Potentially Hazardous"] === "Yes"
   }
+  const hasHighUrgency = (row) => {
+    return row["Urgency"] >= "4"
+  }
+  
   return (
     <Page title="Dashboard">
       <Typography sx={{ py: 2 }} variant="h6">
@@ -43,7 +46,8 @@ const Dashboard = ({ data }) => {
           );
         })}
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12} sx={{ mt: 3 }}>
-          <GenericTable tableObject={neoTableObject} isImportent={isImportent}/>
+          <GenericTable tableObject={data["neoTableObject"]} isImportent={isImportentNeo} title={"Neo Table"}/>
+          <GenericTable tableObject={data["astroEventTableObject"]} isImportent={hasHighUrgency} title={"Astro Event Table"} />
         </Grid>
       </Grid>
     </Page>

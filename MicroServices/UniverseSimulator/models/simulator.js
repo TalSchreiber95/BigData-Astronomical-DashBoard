@@ -33,11 +33,11 @@ const toppings = ["onion", "olives", "tomato", "corn", "mushrooms"];
 
 //# eventTypes
 const eventTypes = [
-  "התפרצות קרינת גאמא (GRB) ",
-  "עליה משמעותית ברמת הארה נצפית (Rise Brightness Apparent)",
-  " עליה משמעותית בקרינת UV ( Rise UV )",
-  "עליה משמעותית בקרינת רנטגן (Rise Ray-X)",
-  "גילוי כוכב שביט (Comet)",
+  "GRB",
+  "Rise Brightness Apparent",
+  "UV (Rise UV)",
+  "Rise Ray-X",
+  "Comet",
 ];
 //# telescopeNotifying list
 const telescopesList = [
@@ -61,16 +61,18 @@ const generateAstroEvent = () => {
   const mn = _.random(00, 59).toString().padStart(2, "0");
   const time = "" + hr + ":" + mn;
   const date = JSON.stringify(new Date(Date.UTC())).substring(1, 11);
-  return {
-    event_id: uuidv4(),
-    telescope: _.sampleSize(telescopesList, Math.floor(_.random(0, 12))),
-    date: date,
-    time: time,
-    ra: Number, // 0-24 hours might be better as string 6.75 = 6h 45m // ### need to check what to do
-    dec: Number, // degrees such as -16.7167 = -16° 43 // ### need to check what to do
-    eventType: _.sampleSize(eventTypes, Math.floor(_.random(0, 5))),
-    urgency: Math.floor(_.random(0, 5)),
+  const astro = {
+    "Astroid's Id": uuidv4(),
+    "Telescope's Name": _.sampleSize(telescopesList, 1)[0],
+    "Date": date,
+    "Time": time,
+    "Ra": 13, // 0-24 hours might be better as string 6.75 = 6h 45m // ### need to check what to do
+    "Dec": 15, // degrees such as -16.7167 = -16° 43 // ### need to check what to do
+    "Event Type": _.sampleSize(eventTypes, 1)[0],
+    "Urgency": Math.floor(_.random(1, 6)),
   };
+
+  return astro
 };
 
 const generateOrder = () => {

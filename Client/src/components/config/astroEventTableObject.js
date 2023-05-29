@@ -1,0 +1,65 @@
+export const astroEventTableObject = {
+          header: [
+            "Astroid's Id",
+            "Telescope's Name",
+            "Date",
+            "Time",
+            "Ra",
+            "Dec",
+            "Event Type",
+            "Urgency",
+          ],
+          body: [
+            {
+              "Astroid's": "2465633",
+              "Telescope's Name": "465633 (2009 JR5)",
+              "Date": "20.48",
+              "Time": "213",
+              "Ra": "476",
+              "Dec": "123",
+              "Event Type": "Yes",
+              "Urgency": "1",
+            },
+            {
+              "Astroid's": "345677",
+              "Telescope's Name": "465633 (2009 JR5)",
+              "Date": "20.48",
+              "Time": "213",
+              "Ra": "476",
+              "Dec": "123",
+              "Event Type": "Yes",
+              "Urgency": "1",
+            },
+            {
+              "Astroid's": "45677889",
+              "Telescope's Name": "465633 (2009 JR5)",
+              "Date": "20.48",
+              "Time": "213",
+              "Ra": "476",
+              "Dec": "123",
+              "Event Type": "Yes",
+              "Urgency": "1",
+            },
+            {
+              "Astroid's": "657564567",
+              "Telescope's Name": "465633 (2009 JR5)",
+              "Date": "20.48",
+              "Time": "213",
+              "Ra": "476",
+              "Dec": "123",
+              "Event Type": "Yes",
+              "Urgency": "6",
+            },
+            {
+              "Astroid's": "2342355",
+              "Telescope's Name": "465633 (2009 JR5)",
+              "Date": "20.48",
+              "Time": "213",
+              "Ra": "476",
+              "Dec": "123",
+              "Event Type": "Yes",
+              "Urgency": "5",
+            }
+          ]
+        };
+        

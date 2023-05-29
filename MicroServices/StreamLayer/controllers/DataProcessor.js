@@ -1,23 +1,42 @@
-const processData = (ordersData, newOrder) => {
-  let newOrdersData = todayOrders(ordersData, newOrder);
-  newOrdersData = ordersByRegion(ordersData, newOrder);
-  newOrdersData = top5Toppings(ordersData, newOrder);
-  newOrdersData = branchesByHandleTime(ordersData, newOrder);
-  newOrdersData = todayOrdersByHours(ordersData, newOrder);
-  return newOrdersData;
+const eventData = require("../models/initial_data");
+
+const processData = (eventsData, newEvent) => {
+  let newEventsData = eventCounters(eventsData, newEvent);
+  newEventsData = eventDistributions(eventsData, newEvent);
+  // newEventsData = top5Toppings(eventsData, newEvent);
+  // newEventsData = branchesByHandleTime(eventsData, newEvent);
+  // newEventsData = todayOrdersByHours(eventsData, newEvent);
+  return newEventsData;
 };
 
-const todayOrders = (ordersData, newOrder) => {
-  if (newOrder.completed) ordersData["Today's Orders"]++;
-  else ordersData["Total Open Orders"]++;
-  const branchesHandle = Object.values(
-    ordersData["Top 5 Shortest Handle Time Branches"].branchesHandleTime
-  );
-  ordersData["Average Handle Time"] = (
-    branchesHandle.reduce((a, b) => a + b, 0) /
-    (ordersData["Total Open Orders"] + ordersData["Today's Orders"])
-  ).toFixed(2);
-  return ordersData;
+const eventCounters = (eventsData, newEvent) => {
+  eventsData["Today's Events"]++;
+  eventsData["Total of close asteroids (monthly)"]++; // need to inrement by the neo astro api 
+  eventsData["Total of close asteroids (daily)"]++; // need to inrement by the neo astro api 
+  return eventsData;
+};
+
+
+const eventDistributions = (eventsData, newEvent) => {
+  switch(newEvent["Event Type"])
+  {
+    case "GRB":
+      eventsData["Events Distribution"][0]++;
+      break;
+    case "Rise Brightness Apparent":
+      eventsData["Events Distribution"][1]++;
+      break;
+    case "UV (Rise UV)":
+      eventsData["Events Distribution"][2]++;
+      break;
+    case "Rise Ray-X":
+      eventsData["Events Distribution"][3]++;
+      break;
+    case "Comet":
+      eventsData["Events Distribution"][4]++;
+      break;
+  }
+  return eventsData;
 };
 
 const top5Toppings = (ordersData, newOrder) => {

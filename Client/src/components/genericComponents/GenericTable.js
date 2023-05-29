@@ -11,19 +11,20 @@ import {
   Paper,
   FormControlLabel,
   Switch,
-  Button, // Import the Button component from MUI
+  Button,
+  CardHeader,
 } from '@mui/material/';
 import LinearProgress from '@mui/material/LinearProgress';
 import TablePagination from '@mui/material/TablePagination';
 import './GenericTable.css'; // Assuming you have a separate CSS file for styles
 
-function GenericTable({ tableObject, isImportent = () => false }) {
+function GenericTable({ tableObject, isImportent = () => false, title }) {
   const { header, body } = tableObject;
   const [dense, setDense] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [stopFlashing, setStopFlashing] = useState(false); // State to control animation
-
+  console.log("tableObject: ", tableObject);
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
@@ -46,6 +47,7 @@ function GenericTable({ tableObject, isImportent = () => false }) {
 
   return (
     <Box sx={{ width: '100%' }}>
+      <CardHeader title={title} />
       <Paper sx={{ width: '100%', mb: 2 }}>
         <TableContainer>
           <Table sx={{ minWidth: 750 }} size={dense ? 'small' : 'medium'}>
@@ -61,9 +63,9 @@ function GenericTable({ tableObject, isImportent = () => false }) {
             <TableBody>
               {(rowsPerPage > 0
                 ? body.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
                 : body
               ).map((row, rowIndex) => (
                 <TableRow
@@ -108,7 +110,7 @@ function GenericTable({ tableObject, isImportent = () => false }) {
         }
         label="Dense padding"
       />
-      <Button onClick={handleStopFlashing}>{stopFlashing?"Show":"Hide"} Flashing</Button> {/* Add the button */}
+      <Button onClick={handleStopFlashing}>{stopFlashing ? "Show" : "Hide"} Flashing</Button> {/* Add the button */}
     </Box>
   );
 }

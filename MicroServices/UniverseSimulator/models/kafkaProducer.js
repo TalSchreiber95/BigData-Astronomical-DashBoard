@@ -29,7 +29,8 @@ producer.on("event.error", (err) => console.log(err));
 const publish = (data, topic) => {
   let msg = new Buffer.from(JSON.stringify(data));
   topic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + topic;
-  console.log("topic: ",topic)
+  console.log("topic from server: ",topic)
+  console.log("msg data: ",data)
   try {
     producer.produce(topic, -1, msg, uuid.v4());
     producer.flush(1000);
