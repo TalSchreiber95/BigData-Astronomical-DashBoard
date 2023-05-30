@@ -4,7 +4,9 @@ const {
   generateBranchEvent,
   generateAstroEvent,
 } = require("../models/simulator");
-// let interval1 = -1;
+const neoFetching = require("./neoFetching");
+
+let interval1 = -1;
 // let interval2 = -1;
 let interval3 = -1;
 let ordersRate = 2;
@@ -23,9 +25,10 @@ const startSimulator = (req, res) => {
     ordersRate = req.query.ordersRate;
     eventsRate = req.query.eventsRate;
   }
+  // need to work on it.
   // interval1 = setInterval(() => {
-  //   kafkaProducer.publish(generateOrder(), "orders");
-  // }, ordersRate * 1000);
+  //   kafkaProducer.publish(neoFetching.run(), "orders");
+  // }, 4 * 1000);
 
   // interval2 = setInterval(() => {
   //   kafkaProducer.publish(generateBranchEvent(), "events");
