@@ -1,6 +1,7 @@
 require("dotenv").config();
 const uuid = require("uuid");
 const Kafka = require("node-rdkafka");
+
 const kafkaConfig = {
   "group.id": "cloudkarafka",
   "metadata.broker.list": process.env.CLOUDKARAFKA_BROKERS.split(","),
@@ -14,13 +15,15 @@ const kafkaConfig = {
 
 const ordersTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "orders";
 const eventsTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "events";
+const sunActivitiesTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "sunActivities";
+const neoTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "neo";
 
 const producer = new Kafka.Producer(kafkaConfig);
 
 producer.connect();
 producer.on("ready", (arg) =>
-  console.log(
-    `producer ${arg.name} ready. topic: ${ordersTopic},${eventsTopic}`
+console.log(
+  `producer ${arg.name} ready. topic: ${ordersTopic}, ${eventsTopic}, ${neoTopic}, ${sunActivitiesTopic}`
   )
 );
 

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import {
   Box,
   Table,
@@ -14,19 +14,24 @@ import {
   Button,
   CardHeader,
   TableSortLabel,
-} from '@mui/material/';
-import LinearProgress from '@mui/material/LinearProgress';
-import TablePagination from '@mui/material/TablePagination';
-import './GenericTable.css';
+} from "@mui/material/";
+import LinearProgress from "@mui/material/LinearProgress";
+import TablePagination from "@mui/material/TablePagination";
+import "./GenericTable.css";
 
-function GenericTable({ tableObject, isImportent = () => false, title }) {
+function GenericTable({
+  tableObject,
+  isImportent = () => false,
+  title,
+  defaultSortFunction,
+}) {
   const { header, body } = tableObject;
   const [dense, setDense] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [stopFlashing, setStopFlashing] = useState(false);
   const [orderBy, setOrderBy] = useState(null);
-  const [order, setOrder] = useState('asc');
+  const [order, setOrder] = useState("asc");
 
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
@@ -42,16 +47,23 @@ function GenericTable({ tableObject, isImportent = () => false, title }) {
   };
 
   const handleSort = (property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+    if (orderBy === property) {
+      setOrder(order === "asc" ? "desc" : "asc");
+    } else {
+      setOrderBy(property);
+      setOrder("asc");
+    }
   };
-
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, body.length - page * rowsPerPage);
 
-  const sortedBody = stableSort(body, getComparator(order, orderBy));
-
+  const sortedBody =
+    orderBy !== null
+      ? stableSort(body, getComparator(order, orderBy))
+      : defaultSortFunction
+      ? defaultSortFunction(body)
+      : body;
+      
   const handleStopFlashing = () => {
     setStopFlashing(!stopFlashing);
   };
@@ -67,7 +79,7 @@ function GenericTable({ tableObject, isImportent = () => false, title }) {
   }
 
   function getComparator(order, orderBy) {
-    return order === 'desc'
+    return order === "desc"
       ? (a, b) => descendingComparator(a, b, orderBy)
       : (a, b) => -descendingComparator(a, b, orderBy);
   }
@@ -83,18 +95,18 @@ function GenericTable({ tableObject, isImportent = () => false, title }) {
   }
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: "100%" }}>
       <CardHeader title={title} />
-      <Paper sx={{ width: '100%', mb: 2 }}>
+      <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
-          <Table sx={{ minWidth: 750 }} size={dense ? 'small' : 'medium'}>
+          <Table sx={{ minWidth: 750 }} size={dense ? "small" : "medium"}>
             <TableHead>
               <TableRow>
                 {header.map((colName, index) => (
-                  <TableCell key={index} sx={{ fontWeight: 'bold' }}>
+                  <TableCell key={index} sx={{ fontWeight: "bold" }}>
                     <TableSortLabel
                       active={orderBy === colName}
-                      direction={orderBy === colName ? order : 'asc'}
+                      direction={orderBy === colName ? order : "asc"}
                       onClick={() => handleSort(colName)}
                     >
                       {colName}
@@ -115,7 +127,7 @@ function GenericTable({ tableObject, isImportent = () => false, title }) {
                   key={rowIndex}
                   style={
                     isImportent(row) && !stopFlashing
-                      ? { animation: 'flash 1s infinite' }
+                      ? { animation: "flash 1s infinite" }
                       : {}
                   }
                 >
@@ -156,7 +168,7 @@ function GenericTable({ tableObject, isImportent = () => false, title }) {
         label="Dense padding"
       />
       <Button onClick={handleStopFlashing}>
-        {stopFlashing ? 'Show' : 'Hide'} Flashing
+        {stopFlashing ? "Show" : "Hide"} Flashing
       </Button>
     </Box>
   );
@@ -168,6 +180,7 @@ GenericTable.propTypes = {
     body: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
   isImportent: PropTypes.func,
+  defaultSortFunction: PropTypes.func,
 };
 
 export default GenericTable;

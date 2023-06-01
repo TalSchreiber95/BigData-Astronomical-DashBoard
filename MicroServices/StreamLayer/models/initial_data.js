@@ -130,14 +130,14 @@ const eventData = {
   "Asteroids close to Earth (monthly)": {
     options: {
       labels: [
-        "Asteroids < 10 meters",
-        "Asteroids between 10 to 20",
-        "Asteroids between 20 to 30",
-        "Asteroids between 30 to 40",
-        "Asteroids > 50 meters",
+        "Asteroids < 15 meters",
+        "Asteroids between 15 to 20",
+        "Asteroids between 20 to 25",
+        "Asteroids between 25 to 30",
+        "Asteroids > 30 meters",
       ],
     },
-    series: [5, 2, 3, 2, 1], /// 0 TO ALL IN THE INIT
+    series: [0, 0, 0, 0, 0], /// 0 TO ALL IN THE INIT
   }, //our data,
   "Sun activities (X-ray level)": {
     options: {
@@ -156,7 +156,7 @@ const eventData = {
     options: {
       labels: ["urgency 1", "urgency 2", "urgency 3", "urgency 4", "urgency 5"],
     },
-    series: [6, 4, 3, 2, 1], /// 0 TO ALL IN THE INIT
+    series: [0, 0, 0, 0, 0], /// 0 TO ALL IN THE INIT
   }, //our data
   "Events Distribution": {
     options: {
@@ -177,7 +177,7 @@ const eventData = {
       },
     ],
   },
-  "neoTableObject": {
+  neoTableObject: {
     header: [
       "Neo ID",
       "Asteroid's Name",
@@ -188,48 +188,11 @@ const eventData = {
       "Close Approach Date",
       "Close Approach Time",
       "Miss Distance",
-      "Orbiting Body"
+      "Orbiting Body",
     ],
-    body: [
-      {
-        "Neo ID": "2465633",
-        "Asteroid's Name": "465633 (2009 JR5)",
-        "Absolute Magnitude (H)": "20.48",
-        "Min Estimated Diameter (meters)": "213",
-        "Max Estimated Diameter (meters)": "476",
-        "Potentially Hazardous": "Yes",
-        "Close Approach Date": "September 8, 2015",
-        "Close Approach Time": "20:28 UTC",
-        "Miss Distance": "45,290,302.848 kilometers (28,142,089.224 miles)",
-        "Orbiting Body": "Earth"
-      },
-      {
-        "Neo ID": "3426410",
-        "Asteroid's Name": "(2008 QV11)",
-        "Absolute Magnitude (H)": "21.34",
-        "Min Estimated Diameter (meters)": "143",
-        "Max Estimated Diameter (meters)": "321",
-        "Potentially Hazardous": "No",
-        "Close Approach Date": "September 8, 2015",
-        "Close Approach Time": "14:31 UTC",
-        "Miss Distance": "38,764,558.551 kilometers (24,087,179.746 miles)",
-        "Orbiting Body": "Earth"
-      },
-      {
-        "Neo ID": "3553060",
-        "Asteroid's Name": "(2010 XT10)",
-        "Absolute Magnitude (H)": "26.5",
-        "Min Estimated Diameter (meters)": "13",
-        "Max Estimated Diameter (meters)": "30",
-        "Potentially Hazardous": "No",
-        "Close Approach Date": "September 8, 2015",
-        "Close Approach Time": "12:07 UTC",
-        "Miss Distance": "73,563,782.385 kilometers (45,710,414.754 miles)",
-        "Orbiting Body": "Earth"
-      },
-    ]
+    body: [],
   },
-  "astroEventTableObject": {
+  astroEventTableObject: {
     header: [
       "Astroid's Id",
       "Telescope's Name",
@@ -240,19 +203,8 @@ const eventData = {
       "Event Type",
       "Urgency",
     ],
-    body: [
-      {
-        "Astroid's Id": "2465633",
-        "Telescope's Name": "465633 (2009 JR5)",
-        "Date": "20.48",
-        "Time": "213",
-        "Ra": "476",
-        "Dec": "123",
-        "Event Type": "Yes",
-        "Urgency": "1",
-      },
-    ]
-  }
+    body: [],
+  },
 };
 
-module.exports = eventData
+module.exports = eventData;

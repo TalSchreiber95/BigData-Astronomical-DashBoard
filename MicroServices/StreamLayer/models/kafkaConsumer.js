@@ -15,12 +15,14 @@ const consumer = new KafkaConsumer({
 
 const ordersTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "orders";
 const eventsTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "events";
+const sunActivitiesTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "sunActivities";
+const neoTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "neo";
 
 consumer
   .on("ready", (arg) => {
-    consumer.subscribe([ordersTopic, eventsTopic]).consume();
+    consumer.subscribe([ordersTopic, eventsTopic,neoTopic,sunActivitiesTopic]).consume();
     console.log(
-      `Consumer ${arg.name} ready. topics: ${ordersTopic}, ${eventsTopic}`
+      `Consumer ${arg.name} ready. topics: ${ordersTopic}, ${eventsTopic}, ${neoTopic}, ${sunActivitiesTopic}`
     );
   })
   .on("disconnected", (arg) =>

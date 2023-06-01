@@ -20,7 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 
 const eventsTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "events";
 const ordersTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "orders";
-const sunActivitiesTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "sunActivities";
+const sunActivitiesTopic =
+  process.env.CLOUDKARAFKA_TOPIC_PREFIX + "sunActivities";
 const neoTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "neo";
 
 const io = new Server(server, { cors: {} });
@@ -37,14 +38,16 @@ kafkaConsumer.on("data", async (msg) => {
   let data = await redis.json.GET("events_data");
   try {
     let newData = JSON.parse(msg.value);
-    if (msg.topic == eventsTopic) {
-      data = processEventsData(data, newData);
-      await redis.json.SET("events_data", "$", data);
-    }
-    if (msg.topic == neoTopic) { // should change to neoTopic
-      data = processNeoData(data, newData);
-      
-      // await redis.json.SET("events_data", "$", data);
+    if (newData !== null) {
+      if (msg.topic == eventsTopic) {
+        data = processEventsData(data, newData);
+        await redis.json.SET("events_data", "$", data);
+      }
+      if (msg.topic == ordersTopic) {
+        // should change to neoTopic
+        data = processNeoData(data, newData);
+        await redis.json.SET("events_data", "$", data);
+      }
     }
   } catch (error) {
     console.error(error);

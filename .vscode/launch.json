@@ -5,12 +5,14 @@
           "version": "0.2.0",
           "configurations": [
                     {
-                              "type": "node",
+                              "type": "chrome",
                               "request": "launch",
-                              "name": "Launch Program",
+                              "name": "Launch Chrome against localhost",
                               "skipFiles": [
                                         "<node_internals>/**"
                               ],
+                              "url": "http://localhost:3000",
+                              "webRoot": "${workspaceFolder}",
                               "program": "${workspaceFolder}\\MicroServices\\StreamLayer\\models\\kafkaConsumer.js"
                     }
           ]

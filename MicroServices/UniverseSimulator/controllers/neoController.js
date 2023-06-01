@@ -1,11 +1,13 @@
 const axios = require("axios");
 const fs = require("fs");
-const neoData = require("./neoData.json");
-const neoDataComparator = require("./neoDataComparator.json");
+const neoDataRes = require("./neoDataRes.json");
 
+let neoDataComparator = [];
 const fetchJSONData = async () => {
-  const startDate = "2015-09-07";
-  const endDate = "2015-09-08";
+  let startDate;
+  let endDate = new Date().toISOString().split("T")[0];
+  startDate = getStartDate();
+  console.log(`startDate= ${startDate} , endDate= ${endDate}`);
   const apiKey = "DEMO_KEY";
   const apiUrl = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=${apiKey}`;
 
@@ -13,7 +15,7 @@ const fetchJSONData = async () => {
     // const response = await axios.get(apiUrl);
     // console.log(response)
     // const jsonData = response.data;
-    const jsonData = neoData;
+    const jsonData = neoDataRes;
     return jsonData;
   } catch (error) {
     console.log("Error fetching JSON data:", error);
@@ -34,14 +36,17 @@ const convertJSONtoNEOArray = (jsonData) => {
           "Asteroid's Name": neo.name,
           "Absolute Magnitude (H)": neo.absolute_magnitude_h,
           "Min Estimated Diameter (meters)":
-            neo.estimated_diameter.kilometers.estimated_diameter_min,
+            neo.estimated_diameter.kilometers.estimated_diameter_min * 100,
           "Max Estimated Diameter (meters)":
-            neo.estimated_diameter.kilometers.estimated_diameter_max,
+            neo.estimated_diameter.kilometers.estimated_diameter_max * 100,
           "Potentially Hazardous": neo.is_potentially_hazardous_asteroid
             ? "Yes"
             : "No",
           "Close Approach Date": neo.close_approach_data[0].close_approach_date,
-          "Close Approach Time": neo.close_approach_data[0].close_approach_time,
+          "Close Approach Time":
+            neo?.close_approach_data[0]?.close_approach_date_full?.split(
+              " "
+            )[1],
           "Miss Distance": neo.close_approach_data[0].miss_distance.kilometers,
           "Orbiting Body": neo.close_approach_data[0].orbiting_body,
         };
@@ -53,15 +58,48 @@ const convertJSONtoNEOArray = (jsonData) => {
   return neoArray;
 };
 
+const getStartDate = () => {
+  const currentDate = new Date();
+  let startDate;
+
+  if (currentDate.getMonth() === 0) {
+    // Current month is January
+    const previousYear = currentDate.getFullYear() - 1;
+    startDate = new Date(previousYear, 11, currentDate.getDate() + 1)
+      .toISOString()
+      .split("T")[0];
+  } else {
+    startDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() - 1,
+      currentDate.getDate() + 1
+    )
+      .toISOString()
+      .split("T")[0];
+  }
+
+  return startDate;
+};
 const fetchFromApi = async () => {
   try {
     const jsonData = await fetchJSONData();
     if (jsonData) {
       const neoArray = convertJSONtoNEOArray(jsonData);
+
+      neoArray.sort((a, b) => {
+        const dateA = new Date(
+          `${a["Close Approach Date"]} ${a["Close Approach Time"]}`
+        );
+        const dateB = new Date(
+          `${b["Close Approach Date"]} ${b["Close Approach Time"]}`
+        );
+        return dateA - dateB;
+      });
+
       console.log(neoArray);
 
       fs.writeFile(
-        "neoData.json",
+        "./controllers/neoData.json",
         JSON.stringify(neoArray),
         { flag: "w" },
         (err) => {
@@ -70,8 +108,8 @@ const fetchFromApi = async () => {
         }
       );
 
-      if (!fs.existsSync("neoDataComparator.json")) {
-        fs.writeFileSync("neoDataComparator.json", JSON.stringify([]));
+      if (neoDataComparator.length > 0) {
+        neoDataComparator = [];
         console.log("neoDataComparator initialized successfully");
       }
 
@@ -83,34 +121,21 @@ const fetchFromApi = async () => {
 };
 
 const generateNeo = () => {
-  if (!fs.existsSync("neoData.json")) {
+  if (!fs.existsSync("./controllers/neoData.json")) {
     console.log("neoData.json file is missing");
     return null;
   }
 
-  if (!fs.existsSync("neoDataComparator.json")) {
-    console.log("neoDataComparator.json file is missing");
-    return null;
-  }
-
   let neoData;
-  let neoDataComparator;
 
   try {
     neoData = require("./neoData.json");
-    neoDataComparator = require("./neoDataComparator.json");
+    if (!Array.isArray(neoData)) {
+      console.log("neoData.json is not correctly formatted");
+      return null;
+    }
   } catch (error) {
     console.log("Error reading JSON files:", error);
-    return null;
-  }
-
-  if (!Array.isArray(neoData)) {
-    console.log("neoData.json is not correctly formatted");
-    return null;
-  }
-
-  if (!Array.isArray(neoDataComparator)) {
-    console.log("neoDataComparator.json is not correctly formatted");
     return null;
   }
 
@@ -124,22 +149,11 @@ const generateNeo = () => {
     return null;
   }
 
-  const randomIndex = Math.floor(Math.random() * neoArray.length);
-  const randomNeo = neoArray[randomIndex];
+  const firstNeo = neoArray[0];
 
-  neoDataComparator.push(randomNeo);
+  neoDataComparator.push(firstNeo);
 
-  fs.writeFile(
-    "neoDataComparator.json",
-    JSON.stringify(neoDataComparator),
-    { flag: "w" },
-    (err) => {
-      if (err) throw err;
-      console.log("Random NEO saved to neoDataComparator.json");
-    }
-  );
-
-  return randomNeo;
+  return firstNeo;
 };
 
 module.exports = { fetchFromApi, generateNeo };
