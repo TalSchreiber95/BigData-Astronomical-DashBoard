@@ -91,7 +91,7 @@ export const DefaultDataConfig = {
     },
     series: [1, 1, 1, 1, 1], /// 0 TO ALL IN THE INIT
   }, //our data,
-  "Sun activities (X-ray level)": {
+  "Sun's Activities (X-ray level)": {
     options: {
       xaxis: {
         categories: createTimeList(), //will be displayed on the x-asis
@@ -100,6 +100,19 @@ export const DefaultDataConfig = {
     series: [
       {
         name: "X-ray level", //will be displayed on the y-axis
+        data: [2, 5, 1, 3, 0, 2, 10],
+      },
+    ],
+  },
+  "Sun's Weather (Hourly)": {
+    options: {
+      xaxis: {
+        categories: createTimeList(), //will be displayed on the x-asis
+      },
+    },
+    series: [
+      {
+        name: "Temperature", //will be displayed on the y-axis
         data: [2, 5, 1, 3, 0, 2, 10],
       },
     ],

@@ -96,7 +96,7 @@ const fetchFromApi = async () => {
         return dateA - dateB;
       });
 
-      console.log(neoArray);
+      // console.log(neoArray);
 
       fs.writeFile(
         "./controllers/neoData.json",

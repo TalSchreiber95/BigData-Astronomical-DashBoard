@@ -1,10 +1,7 @@
 const kafkaProducer = require("../models/kafkaProducer");
-const {
-  generateOrder,
-  generateBranchEvent,
-  generateAstroEvent,
-} = require("../models/simulator");
-const neoController = require("./neoController");
+const { generateAstroEvent } = require("../models/simulator");
+const { generateNeo } = require("./neoController");
+const { getSunInfo } = require("./sunController");
 
 let interval1 = -1;
 let interval2 = -1;
@@ -16,7 +13,7 @@ let status = `Simulator is Running.
 Orders Rate: message per ${ordersRate} Seconds.
 Events Rate: message per ${eventsRate} Seconds.`;
 
-const startSimulator = (req, res) => {
+const startSimulator = async (req, res) => {
   isRunning = true;
   clearInterval(interval1);
   clearInterval(interval2);
@@ -26,14 +23,16 @@ const startSimulator = (req, res) => {
     eventsRate = req.query.eventsRate;
   }
 
+  // need to change the topic into sunActivitiesTopic
+  // kafkaProducer.publish(await getSunInfo(), "orders");
+
   interval1 = setInterval(() => {
     kafkaProducer.publish(generateAstroEvent(), "events");
   }, 12 * 1000);
 
-  // need to work on it.
+  // need to change the topic into neoTopic
   interval2 = setInterval(() => {
-    const neoGenerated = neoController.generateNeo();
-    if (neoGenerated !== null) kafkaProducer.publish(neoGenerated, "orders");
+    if (neoGenerated !== null) kafkaProducer.publish(generateNeo(), "orders");
     else clearInterval(interval2);
   }, 10 * 1000);
 

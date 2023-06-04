@@ -92,5 +92,26 @@ const neoCharts = (data, newNeo) => {
   else data["Asteroids close to Earth (monthly)"].series[0]++;
   return data;
 };
+const processSunInfo = (data, newSunInfo) => {
+  console.log("newNeo: ", newSunInfo);
+  console.log("data: ", data);
+  newEventsData = processSunWeather(data, newSunInfo.weatherData);
+  newEventsData = processSunActivities(data, newSunInfo.sunXRayActivities);
+  return data;
+};
+const processSunActivities = (data, newSunActivitis) => {
+  console.log("newNeo: ", newSunActivitis);
+  console.log("data: ", data);
+  data["Sun's Activities (X-ray level)"].options.xaxis.categories= newSunActivitis.map((obj)=>obj.timeTag)
+  data["Sun's Activities (X-ray level)"].series[0].data = newSunActivitis.map((obj)=>obj.xRayRate)
+  return data;
+};
+const processSunWeather = (data, newWeatherData) => {
+  console.log("newNeo: ", newWeatherData);
+  console.log("data: ", data);
+  data["Sun's Weather (Hourly)"].options.xaxis.categories= newWeatherData.map((obj)=>obj.time)
+  data["Sun's Weather (Hourly)"].series[0].data = newWeatherData.map((obj)=>obj.temperature+"°")
+  return data;
+};
 
-module.exports = { processEventsData, processNeoData };
+module.exports = { processEventsData, processNeoData, processSunInfo };

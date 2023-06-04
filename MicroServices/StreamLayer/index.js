@@ -11,6 +11,7 @@ const kafkaConsumer = require("./models/kafkaConsumer.js");
 const {
   processEventsData,
   processNeoData,
+  processSunInfo,
 } = require("./controllers/DataProcessor.js");
 const { log } = require("console");
 
@@ -46,6 +47,12 @@ kafkaConsumer.on("data", async (msg) => {
       if (msg.topic == ordersTopic) {
         // should change to neoTopic
         data = processNeoData(data, newData);
+        await redis.json.SET("events_data", "$", data);
+      }
+      if (msg.topic == sunActivitiesTopic) {
+        // should change to sunActivitiesTopic
+        console.log(newData);
+        data = processSunInfo(data, newData);
         await redis.json.SET("events_data", "$", data);
       }
     }
