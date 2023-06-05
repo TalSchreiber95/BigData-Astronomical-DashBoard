@@ -5,7 +5,9 @@ const http = require("http");
 const { Server } = require("socket.io");
 const server = http.createServer(app);
 const cors = require("cors");
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4001;
+console.log(`PORT USED: ${PORT}`);
+
 const redis = require("./models/Redis.js");
 const kafkaConsumer = require("./models/kafkaConsumer.js");
 const {
@@ -13,7 +15,6 @@ const {
   processNeoData,
   processSunInfo,
 } = require("./controllers/DataProcessor.js");
-const { log } = require("console");
 
 app.use(cors({}));
 app.use(express.json());
