@@ -110,7 +110,10 @@ const processSunWeather = (data, newWeatherData) => {
   console.log("newNeo: ", newWeatherData);
   console.log("data: ", data);
   data["Sun's Weather (Hourly)"].options.xaxis.categories= newWeatherData.map((obj)=>obj.time)
-  data["Sun's Weather (Hourly)"].series[0].data = newWeatherData.map((obj)=>obj.temperature+"°")
+  data["Sun's Weather (Hourly)"].series[0].data = newWeatherData.map((obj)=>obj.temperature)
+  data["Sun's Weather (Hourly)"].series[1].data = newWeatherData.map((obj)=>obj.condition)
+  data["Sun's Weather (Hourly)"].series[2].data = newWeatherData.map((obj)=>obj.precip)
+  data["Sun's Weather (Hourly)"].series[3].data = newWeatherData.map((obj)=>obj.wind)
   return data;
 };
 

@@ -60,7 +60,7 @@ const generateAstroEvent = () => {
   const hr = _.random(10, 21).toString().padStart(2, "0");
   const mn = _.random(0, 59).toString().padStart(2, "0");
   const time = "" + hr + ":" + mn;
-  
+
   const currentDate = new Date();
   const year = currentDate.getUTCFullYear();
   const month = currentDate.getUTCMonth();
@@ -75,10 +75,10 @@ const generateAstroEvent = () => {
     "Ra": 13, // 0-24 hours might be better as string 6.75 = 6h 45m // ### need to check what to do
     "Dec": 15, // degrees such as -16.7167 = -16° 43 // ### need to check what to do
     "Event Type": _.sampleSize(eventTypes, 1)[0],
-    "Urgency":  getRandomNumber(),
+    "Urgency": getRandomNumber(),
   };
 
-  return astro
+  return { astro: astro, Topic: "astro" };
 };
 const getRandomNumber = () => {
   const randomNumber = Math.random();

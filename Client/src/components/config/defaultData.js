@@ -78,7 +78,6 @@ export const DefaultDataConfig = {
   "Today's Events": 0,
   "Total of close asteroids (monthly)": 0,
   "Total of close asteroids (daily)": 0,
-  // "Open Branches": 0,
   "Asteroids close to Earth (monthly)": {
     options: {
       labels: [
@@ -89,7 +88,7 @@ export const DefaultDataConfig = {
         "Asteroids > 30 meters",
       ],
     },
-    series: [1, 1, 1, 1, 1], /// 0 TO ALL IN THE INIT
+    series: [0, 0, 0, 0, 0], /// 0 TO ALL IN THE INIT
   }, //our data,
   "Sun's Activities (X-ray level)": {
     options: {
@@ -100,7 +99,7 @@ export const DefaultDataConfig = {
     series: [
       {
         name: "X-ray level", //will be displayed on the y-axis
-        data: [2, 5, 1, 3, 0, 2, 10],
+        data: [0, 0, 0, 0, 0, 0, 0],
       },
     ],
   },
@@ -113,7 +112,19 @@ export const DefaultDataConfig = {
     series: [
       {
         name: "Temperature", //will be displayed on the y-axis
-        data: [2, 5, 1, 3, 0, 2, 10],
+        data: [0, 0, 0, 0, 0, 0, 0],
+      },
+      {
+        name: "Condition(1 to 5)", //will be displayed on the y-axis
+        data: [0, 0, 0, 0, 0, 0, 0],
+      },
+      {
+        name: "Precip(%)", //will be displayed on the y-axis
+        data: [0, 0, 0, 0, 0, 0, 0],
+      },
+      {
+        name: "Wind(KM/H)", //will be displayed on the y-axis
+        data: [0, 0, 0, 0, 0, 0, 0],
       },
     ],
   },
@@ -121,7 +132,7 @@ export const DefaultDataConfig = {
     options: {
       labels: ["urgency 1", "urgency 2", "urgency 3", "urgency 4", "urgency 5"],
     },
-    series: [1, 1, 1, 1, 1], /// 0 TO ALL IN THE INIT
+    series: [0, 0, 0, 0, 0], /// 0 TO ALL IN THE INIT
   }, //our data
   "Events Distribution": {
     options: {
@@ -168,47 +179,6 @@ export const DefaultDataConfig = {
       "Event Type",
       "Urgency",
     ],
-    body: [
-      {
-        "Astroid's": "2465633",
-        "Telescope's Name": "465633 (2009 JR5)",
-        Date: "20.48",
-        Time: "213",
-        Ra: "476",
-        Dec: "123",
-        "Event Type": "Yes",
-        Urgency: "1",
-      },
-      {
-        "Astroid's": "345677",
-        "Telescope's Name": "465633 (2009 JR5)",
-        Date: "20.48",
-        Time: "213",
-        Ra: "476",
-        Dec: "123",
-        "Event Type": "Yes",
-        Urgency: "1",
-      },
-      {
-        "Astroid's": "657564567",
-        "Telescope's Name": "465633 (2009 JR5)",
-        Date: "20.48",
-        Time: "213",
-        Ra: "476",
-        Dec: "123",
-        "Event Type": "Yes",
-        Urgency: "3",
-      },
-      {
-        "Astroid's": "2342355",
-        "Telescope's Name": "465633 (2009 JR5)",
-        Date: "20.48",
-        Time: "213",
-        Ra: "476",
-        Dec: "123",
-        "Event Type": "Yes",
-        Urgency: "5",
-      },
-    ],
+    body: [],
   },
 };

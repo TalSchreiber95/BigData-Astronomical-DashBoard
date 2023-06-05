@@ -14,30 +14,25 @@ const scrapeWeatherData = async () => {
     );
     const hourDetails = [];
 
-    for (let i = 1; i <= 23; i++) {
+    for (let i = 1; i <= 24; i++) {
       const detailId = `#detailIndex${i}`;
       const detailElement = $(detailId);
       const time = detailElement.find("h3[data-testid='daypartName']").text();
-
-      // Extract hour from the time string
-      const hour = parseInt(time.split(":")[0]);
-
-      if (hour > 23) {
-        break; // Break the loop if hour is greater than 23
-      }
 
       const temperature = detailElement
         .find("span[data-testid='TemperatureValue']")
         .text()
         .split("°")[1];
-      const condition = detailElement
+      let condition = detailElement
         .find("div[data-testid='wxIcon'] span")
         .text();
+      condition = setCondition(condition);
       const precip = detailElement
         .find("div[data-testid='Precip'] span")
-        .text();
-      const wind = detailElement.find("div[data-testid='wind'] span").text();
-
+        .text()
+        .split("%")[0];
+      let wind = detailElement.find("div[data-testid='wind'] span").text();
+      wind = setWind(wind);
       hourDetails.push({
         time,
         temperature,
@@ -52,7 +47,32 @@ const scrapeWeatherData = async () => {
     console.log("Error:", error);
   }
 };
+const setCondition = (conditionText) => {
+  switch (conditionText) {
+    case "שמש":
+      return 1;
+    case "בהיר":
+      return 2;
+    case "מעונן חלקית":
+      return 3;
+    case "טיפטופים":
+      return 4;
+    case "גשם":
+      return 5;
+    default:
+  }
+};
+const setWind = (wind) => {
+  const numberPattern = /\d+/;
+  const matches = wind.match(numberPattern);
 
+  if (matches && matches.length > 0) {
+    return parseInt(matches[0]);
+  } else {
+    // Handle case where no number is found
+    return 0;
+  }
+};
 const getSunXRayActivities = async () => {
   try {
     const now = new Date();
@@ -98,6 +118,10 @@ const getSunXRayActivities = async () => {
 const getSunInfo = async () => {
   const weatherData = await scrapeWeatherData();
   const sunXRayActivities = await getSunXRayActivities();
-  return { weatherData: weatherData, sunXRayActivities: sunXRayActivities };
+  return {
+    weatherData: weatherData,
+    sunXRayActivities: sunXRayActivities,
+    Topic: "sunInfo",
+  };
 };
 module.exports = { getSunInfo, getSunXRayActivities, scrapeWeatherData };

@@ -8,7 +8,7 @@ initializeData = async () => {
   await neoController.fetchFromApi();
   console.log("data initialized successfully! ");
   // need to publish to sunActivitiesTopic
-  // kafkaProducer.publish(await getSunInfo(), "orders");
+  kafkaProducer.publish(await getSunInfo(), "events");
 };
 
 module.exports = {

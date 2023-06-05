@@ -126,7 +126,6 @@ const eventData = {
   "Today's Events": 0,
   "Total of close asteroids (monthly)": 0,
   "Total of close asteroids (daily)": 0,
-  // "Open Branches": 0,
   "Asteroids close to Earth (monthly)": {
     options: {
       labels: [
@@ -148,7 +147,7 @@ const eventData = {
     series: [
       {
         name: "X-ray level", //will be displayed on the y-axis
-        data: [2, 5, 1, 3, 0, 2, 10],
+        data: [0,0, 0, 0, 0,0, 0],
       },
     ],
   },
@@ -161,7 +160,19 @@ const eventData = {
     series: [
       {
         name: "Temperature", //will be displayed on the y-axis
-        data: [2, 5, 1, 3, 0, 2, 10],
+        data: [0, 0, 0, 0, 0, 0, 0],
+      },
+      {
+        name: "Condition(1 to 5)", //will be displayed on the y-axis
+        data: [0, 0, 0, 0, 0, 0, 0],
+      },
+      {
+        name: "Precip(%)", //will be displayed on the y-axis
+        data: [0, 0, 0, 0, 0, 0, 0],
+      },
+      {
+        name: "Wind(KM/H)", //will be displayed on the y-axis
+        data: [0, 0, 0, 0, 0, 0, 0],
       },
     ],
   },

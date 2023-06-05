@@ -149,11 +149,11 @@ const generateNeo = () => {
     return null;
   }
 
-  const firstNeo = neoArray[0];
+  const neo = neoArray[0];
 
-  neoDataComparator.push(firstNeo);
+  neoDataComparator.push(neo);
 
-  return firstNeo;
+  return { neo: neo, Topic: "neo" };
 };
 
 module.exports = { fetchFromApi, generateNeo };

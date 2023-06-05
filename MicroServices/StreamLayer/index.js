@@ -42,19 +42,21 @@ kafkaConsumer.on("data", async (msg) => {
     let newData = JSON.parse(msg.value);
     if (newData !== null) {
       if (msg.topic == eventsTopic) {
-        data = processEventsData(data, newData);
-        await redis.json.SET("events_data", "$", data);
-      }
-      if (msg.topic == ordersTopic) {
-        // should change to neoTopic
-        data = processNeoData(data, newData);
-        await redis.json.SET("events_data", "$", data);
-      }
-      if (msg.topic == sunActivitiesTopic) {
-        // should change to sunActivitiesTopic
-        console.log(newData);
-        data = processSunInfo(data, newData);
-        await redis.json.SET("events_data", "$", data);
+        if (newData.Topic === "astro") {
+          data = processEventsData(data, newData.astro);
+          await redis.json.SET("events_data", "$", data);
+        }
+        if (newData.Topic === "sunInfo") {
+          // should change to sunActivitiesTopic
+          console.log(newData);
+          data = processSunInfo(data, newData);
+          await redis.json.SET("events_data", "$", data);
+        }
+        if (newData.Topic === "neo") {
+          // should change to neoTopic
+          data = processNeoData(data, newData.neo);
+          await redis.json.SET("events_data", "$", data);
+        }
       }
     }
   } catch (error) {

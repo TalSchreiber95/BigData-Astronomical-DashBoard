@@ -20,9 +20,25 @@ app.use("/api", routes.routes);
 
 kafkaConsumer.on("data", function (msg) {
   console.log(msg.value.toString());
-  const newOrder = JSON.parse(msg.value);
-  saveToDB(newOrder);
-  indexDocument(newOrder);
+  let newData = JSON.parse(msg.value);
+  if (newData !== null) {
+    if (msg.topic == eventsTopic) {
+      if (newData.Topic === "astro") {
+        // do whatever you need with newData.astro
+      }
+      if (newData.Topic === "sunInfo") {
+        // should change to sunInfo
+        // do whatever you need with newData
+      }
+      if (newData.Topic === "neo") {
+        // should change to neoTopic
+        // do whatever you need with newData.neo
+      }
+    }
+  }
+  // Note: you should save the necessary object in each used as described above
+  saveToDB(newData); // for mongoDb 
+  indexDocument(newData); // for elasticSearch
 });
 
 app.listen(PORT, () => {

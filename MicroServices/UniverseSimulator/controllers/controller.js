@@ -24,7 +24,7 @@ const startSimulator = async (req, res) => {
   }
 
   // need to change the topic into sunActivitiesTopic
-  // kafkaProducer.publish(await getSunInfo(), "orders");
+  kafkaProducer.publish(await getSunInfo(), "events");
 
   interval1 = setInterval(() => {
     kafkaProducer.publish(generateAstroEvent(), "events");
@@ -32,7 +32,8 @@ const startSimulator = async (req, res) => {
 
   // need to change the topic into neoTopic
   interval2 = setInterval(() => {
-    if (neoGenerated !== null) kafkaProducer.publish(generateNeo(), "orders");
+    const neoGenerated = generateNeo();
+    if (neoGenerated !== null) kafkaProducer.publish(neoGenerated, "events");
     else clearInterval(interval2);
   }, 10 * 1000);
 
