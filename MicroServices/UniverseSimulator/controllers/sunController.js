@@ -18,6 +18,14 @@ const scrapeWeatherData = async () => {
       const detailId = `#detailIndex${i}`;
       const detailElement = $(detailId);
       const time = detailElement.find("h3[data-testid='daypartName']").text();
+
+      // Extract hour from the time string
+      const hour = parseInt(time.split(":")[0]);
+
+      if (hour > 23) {
+        break; // Break the loop if hour is greater than 23
+      }
+
       const temperature = detailElement
         .find("span[data-testid='TemperatureValue']")
         .text()
