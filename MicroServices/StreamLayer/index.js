@@ -5,7 +5,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 const server = http.createServer(app);
 const cors = require("cors");
-const PORT = process.env.PORT || 4001;
+const PORT = process.env.PORT;
 const redis = require("./models/Redis.js");
 const kafkaConsumer = require("./models/kafkaConsumer.js");
 const {
