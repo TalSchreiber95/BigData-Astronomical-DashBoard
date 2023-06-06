@@ -14,6 +14,7 @@ const {
   processEventsData,
   processNeoData,
   processSunInfo,
+  processBrightStarData,
 } = require("./controllers/DataProcessor.js");
 
 app.use(cors({}));
@@ -55,6 +56,11 @@ kafkaConsumer.on("data", async (msg) => {
         if (newData.Topic === "neo") {
           // should change to neoTopic
           data = processNeoData(data, newData.neo);
+          await redis.json.SET("events_data", "$", data);
+        }
+        if (newData.Topic === "brightStar") {
+          // should change to brightStar
+          data = processBrightStarData(data, newData.selectedStar);
           await redis.json.SET("events_data", "$", data);
         }
       }

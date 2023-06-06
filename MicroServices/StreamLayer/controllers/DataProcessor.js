@@ -102,19 +102,41 @@ const processSunInfo = (data, newSunInfo) => {
 const processSunActivities = (data, newSunActivitis) => {
   console.log("newNeo: ", newSunActivitis);
   console.log("data: ", data);
-  data["Sun's Activities (X-ray level)"].options.xaxis.categories= newSunActivitis.map((obj)=>obj.timeTag)
-  data["Sun's Activities (X-ray level)"].series[0].data = newSunActivitis.map((obj)=>obj.xRayRate)
+  data["Sun's Activities (X-ray level)"].options.xaxis.categories =
+    newSunActivitis.map((obj) => obj.timeTag);
+  data["Sun's Activities (X-ray level)"].series[0].data = newSunActivitis.map(
+    (obj) => obj.xRayRate
+  );
   return data;
 };
 const processSunWeather = (data, newWeatherData) => {
   console.log("newNeo: ", newWeatherData);
   console.log("data: ", data);
-  data["Sun's Weather (Hourly)"].options.xaxis.categories= newWeatherData.map((obj)=>obj.time)
-  data["Sun's Weather (Hourly)"].series[0].data = newWeatherData.map((obj)=>obj.temperature)
-  data["Sun's Weather (Hourly)"].series[1].data = newWeatherData.map((obj)=>obj.condition)
-  data["Sun's Weather (Hourly)"].series[2].data = newWeatherData.map((obj)=>obj.precip)
-  data["Sun's Weather (Hourly)"].series[3].data = newWeatherData.map((obj)=>obj.wind)
+  data["Sun's Weather (Hourly)"].options.xaxis.categories = newWeatherData.map(
+    (obj) => obj.time
+  );
+  data["Sun's Weather (Hourly)"].series[0].data = newWeatherData.map(
+    (obj) => obj.temperature
+  );
+  data["Sun's Weather (Hourly)"].series[1].data = newWeatherData.map(
+    (obj) => obj.condition
+  );
+  data["Sun's Weather (Hourly)"].series[2].data = newWeatherData.map(
+    (obj) => obj.precip
+  );
+  data["Sun's Weather (Hourly)"].series[3].data = newWeatherData.map(
+    (obj) => obj.wind
+  );
+  return data;
+};
+const processBrightStarData = (data, newStars) => {
+  data["brightStars"].body.push(newStars);
   return data;
 };
 
-module.exports = { processEventsData, processNeoData, processSunInfo };
+module.exports = {
+  processEventsData,
+  processNeoData,
+  processSunInfo,
+  processBrightStarData,
+};

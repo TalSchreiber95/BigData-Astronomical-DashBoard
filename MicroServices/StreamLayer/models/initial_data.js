@@ -147,7 +147,7 @@ const eventData = {
     series: [
       {
         name: "X-ray level", //will be displayed on the y-axis
-        data: [0,0, 0, 0, 0,0, 0],
+        data: [0, 0, 0, 0, 0, 0, 0],
       },
     ],
   },
@@ -226,6 +226,19 @@ const eventData = {
       "Dec",
       "Event Type",
       "Urgency",
+    ],
+    body: [],
+  },
+  brightStars: {
+    header: [
+      "Harvard Reference Number",
+      "RA",
+      "DEC",
+      "Epoch",
+      "RA Proper Motion",
+      "DEC Proper Motion",
+      "Magnitude",
+      "Title HD",
     ],
     body: [],
   },

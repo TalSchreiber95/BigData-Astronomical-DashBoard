@@ -1,8 +1,9 @@
 const axios = require("axios");
-const fs = require("fs");
-const neoDataRes = require("./neoDataRes.json");
+const kafkaProducer = require("../models/kafkaProducer");
 
+let neoArrayHolder;
 let neoDataComparator = [];
+let interval1 = -1;
 const fetchJSONData = async () => {
   let startDate;
   let endDate = new Date().toISOString().split("T")[0];
@@ -12,10 +13,8 @@ const fetchJSONData = async () => {
   const apiUrl = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=${apiKey}`;
 
   try {
-    // const response = await axios.get(apiUrl);
-    // console.log(response)
-    // const jsonData = response.data;
-    const jsonData = neoDataRes;
+    const response = await axios.get(apiUrl);
+    const jsonData = response.data;
     return jsonData;
   } catch (error) {
     console.log("Error fetching JSON data:", error);
@@ -63,16 +62,15 @@ const getStartDate = () => {
   let startDate;
 
   if (currentDate.getMonth() === 0) {
-    // Current month is January
     const previousYear = currentDate.getFullYear() - 1;
-    startDate = new Date(previousYear, 11, currentDate.getDate() + 1)
+    startDate = new Date(previousYear, 11, currentDate.getDate() - 5)
       .toISOString()
       .split("T")[0];
   } else {
     startDate = new Date(
       currentDate.getFullYear(),
-      currentDate.getMonth() - 1,
-      currentDate.getDate() + 1
+      currentDate.getMonth(),
+      currentDate.getDate() - 6
     )
       .toISOString()
       .split("T")[0];
@@ -80,13 +78,15 @@ const getStartDate = () => {
 
   return startDate;
 };
+
 const fetchFromApi = async () => {
   try {
+    clearInterval(interval1);
     const jsonData = await fetchJSONData();
     if (jsonData) {
-      const neoArray = convertJSONtoNEOArray(jsonData);
+      neoArrayHolder = convertJSONtoNEOArray(jsonData);
 
-      neoArray.sort((a, b) => {
+      neoArrayHolder.sort((a, b) => {
         const dateA = new Date(
           `${a["Close Approach Date"]} ${a["Close Approach Time"]}`
         );
@@ -96,24 +96,18 @@ const fetchFromApi = async () => {
         return dateA - dateB;
       });
 
-      // console.log(neoArray);
-
-      fs.writeFile(
-        "./controllers/neoData.json",
-        JSON.stringify(neoArray),
-        { flag: "w" },
-        (err) => {
-          if (err) throw err;
-          console.log("neoArray saved to neoData.json");
-        }
-      );
-
       if (neoDataComparator.length > 0) {
         neoDataComparator = [];
         console.log("neoDataComparator initialized successfully");
       }
 
-      return neoArray;
+      interval1 = setInterval(() => {
+        const neoGenerated = generateNeo();
+        console.log(neoGenerated);
+        if (neoGenerated !== null)
+          kafkaProducer.publish(neoGenerated, "events");
+        else clearInterval(interval1);
+      }, 12 * 1000);
     }
   } catch (error) {
     console.log("Error:", error);
@@ -121,17 +115,9 @@ const fetchFromApi = async () => {
 };
 
 const generateNeo = () => {
-  if (!fs.existsSync("./controllers/neoData.json")) {
-    console.log("neoData.json file is missing");
-    return null;
-  }
-
-  let neoData;
-
   try {
-    neoData = require("./neoData.json");
-    if (!Array.isArray(neoData)) {
-      console.log("neoData.json is not correctly formatted");
+    if (!Array.isArray(neoArrayHolder)) {
+      console.log("neoArrayHolder is not correctly formatted");
       return null;
     }
   } catch (error) {
@@ -139,7 +125,7 @@ const generateNeo = () => {
     return null;
   }
 
-  const neoArray = neoData.filter((neo) => {
+  const neoArray = neoArrayHolder.filter((neo) => {
     const neoId = neo["Neo ID"];
     return !neoDataComparator.some((obj) => obj["Neo ID"] === neoId);
   });

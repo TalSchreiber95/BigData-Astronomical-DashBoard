@@ -11,6 +11,7 @@ const { indexDocument } = require("./models/elasticSearch");
 app.use(cors({}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+const eventsTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "events";
 
 app.get("/", (req, res) => {
   res.json({ message: "Hello from Batch Layer" });
@@ -33,6 +34,10 @@ kafkaConsumer.on("data", function (msg) {
       if (newData.Topic === "neo") {
         // should change to neoTopic
         // do whatever you need with newData.neo
+      }
+      if (newData.Topic === "brightStar") {
+        // should change to brightStar
+        // do whatever you need with newData.selectedStar
       }
     }
   }

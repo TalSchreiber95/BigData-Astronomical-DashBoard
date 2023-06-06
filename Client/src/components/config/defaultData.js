@@ -181,4 +181,17 @@ export const DefaultDataConfig = {
     ],
     body: [],
   },
+  brightStars: {
+    header: [
+      "Harvard Reference Number",
+      "RA",
+      "DEC",
+      "Epoch",
+      "RA Proper Motion",
+      "DEC Proper Motion",
+      "Magnitude",
+      "Title HD",
+    ],
+    body: [],
+  },
 };
