@@ -16,7 +16,7 @@ Events Rate: message per ${eventsRate} Seconds.`;
 const startSimulator = async (req, res) => {
   isRunning = true;
   clearInterval(interval1);
-  clearInterval(interval2);
+  // clearInterval(interval2);
   // clearInterval(interval3);
   if (req.query.hasOwnProperty("ordersRate")) {
     ordersRate = req.query.ordersRate;
@@ -24,18 +24,18 @@ const startSimulator = async (req, res) => {
   }
 
   // need to change the topic into sunActivitiesTopic
-  kafkaProducer.publish(await getSunInfo(), "events");
+  // kafkaProducer.publish(await getSunInfo(), "events");
 
   interval1 = setInterval(() => {
     kafkaProducer.publish(generateAstroEvent(), "events");
   }, 12 * 1000);
 
   // need to change the topic into neoTopic
-  interval2 = setInterval(() => {
-    const neoGenerated = generateNeo();
-    if (neoGenerated !== null) kafkaProducer.publish(neoGenerated, "events");
-    else clearInterval(interval2);
-  }, 10 * 1000);
+  // interval2 = setInterval(() => {
+  //   const neoGenerated = generateNeo();
+  //   if (neoGenerated !== null) kafkaProducer.publish(neoGenerated, "events");
+  //   else clearInterval(interval2);
+  // }, 10 * 1000);
 
   status = `Simulator is Running.
   Orders Rate: message per ${ordersRate} Seconds.
@@ -46,7 +46,7 @@ const startSimulator = async (req, res) => {
 
 const stopSimulator = (req, res) => {
   clearInterval(interval1);
-  clearInterval(interval2);
+  // clearInterval(interval2);
   isRunning = false;
   console.log("Simulator Stopped");
   res.send("Simulator Stopped");
