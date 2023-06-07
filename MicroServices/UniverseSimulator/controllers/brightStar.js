@@ -27,6 +27,7 @@ const getBrightStar = async () => {
       if (selectedStar !== null) kafkaProducer.publish(selectedStar, "events");
       else clearInterval(interval1);
     }, 5 * 1000);
+    return brightStarsArray;
   } catch (error) {
     console.error("Error fetching the BrightStar.json file:", error.message);
     return null;

@@ -49,7 +49,6 @@ kafkaConsumer.on("data", async (msg) => {
         }
         if (newData.Topic === "sunInfo") {
           // should change to sunActivitiesTopic
-          console.log(newData);
           data = processSunInfo(data, newData);
           await redis.json.SET("events_data", "$", data);
         }

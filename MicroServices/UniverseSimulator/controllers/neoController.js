@@ -101,13 +101,15 @@ const fetchFromApi = async () => {
         console.log("neoDataComparator initialized successfully");
       }
 
-      interval1 = setInterval(() => {
-        const neoGenerated = generateNeo();
-        console.log(neoGenerated);
-        if (neoGenerated !== null)
-          kafkaProducer.publish(neoGenerated, "events");
-        else clearInterval(interval1);
-      }, 12 * 1000);
+      // interval1 = setInterval(() => {
+      //   const neoGenerated = generateNeo();
+      //   console.log(neoGenerated);
+      //   if (neoGenerated !== null)
+      //     kafkaProducer.publish(neoGenerated, "events");
+      //   else clearInterval(interval1);
+      // }, 12 * 1000);
+      
+      return { neo: neoArrayHolder, Topic: "neo" };
     }
   } catch (error) {
     console.log("Error:", error);

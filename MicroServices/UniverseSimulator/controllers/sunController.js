@@ -55,10 +55,12 @@ const setCondition = (conditionText) => {
       return 2;
     case "מעונן חלקית":
       return 3;
-    case "טיפטופים":
+    case "מעונן":
       return 4;
-    case "גשם":
+    case "ממטרים":
       return 5;
+    case "גשם":
+      return 6;
     default:
   }
 };

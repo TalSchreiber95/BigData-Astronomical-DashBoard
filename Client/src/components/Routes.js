@@ -29,7 +29,7 @@ export default function Routes() {
 
   useEffect(() => {
     socket.on("events_data", (res) => {
-      // console.log("res from server= ",res);
+      console.log("res from server= ",res);
       setData(res);
     });
   }, [socket]);

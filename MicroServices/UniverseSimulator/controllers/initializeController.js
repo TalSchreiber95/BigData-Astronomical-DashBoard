@@ -1,12 +1,12 @@
-const neoController = require("./neoController");
-const { getSunInfo, scrapeWeatherData } = require("./sunController");
+const { fetchFromApi } = require("./neoController");
+const { getSunInfo } = require("./sunController");
 const getBrightStar = require("./brightStar");
 const kafkaProducer = require("../models/kafkaProducer");
 const interval1 = -1;
 
 initializeData = async () => {
   // await scrapeWeatherData();
-  await neoController.fetchFromApi();
+  kafkaProducer.publish(await fetchFromApi(), "events");
   // need to publish to sunActivitiesTopic
   kafkaProducer.publish(await getSunInfo(), "events");
   await getBrightStar();

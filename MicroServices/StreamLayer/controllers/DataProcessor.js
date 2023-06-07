@@ -61,7 +61,7 @@ const processNeoData = (data, newNeo) => {
 };
 
 const neoCountersAndTable = (data, newNeo) => {
-  data["neoTableObject"].body.push(newNeo);
+  data["neoTableObject"].body = newNeo;
   const dailyCount = data["neoTableObject"].body.filter((obj) =>
     filterDate(obj)
   ).length;
@@ -84,12 +84,17 @@ const filterDate = (obj) => {
   return daysDifference < 1 && hoursDifference < 24;
 };
 const neoCharts = (data, newNeo) => {
-  const neoSize = newNeo["Absolute Magnitude (H)"];
-  if (neoSize > 30) data["Asteroids close to Earth (monthly)"].series[4]++;
-  else if (neoSize > 25) data["Asteroids close to Earth (monthly)"].series[3]++;
-  else if (neoSize > 20) data["Asteroids close to Earth (monthly)"].series[2]++;
-  else if (neoSize > 15) data["Asteroids close to Earth (monthly)"].series[1]++;
-  else data["Asteroids close to Earth (monthly)"].series[0]++;
+  newNeo.map((neo) => {
+    const neoSize = neo["Absolute Magnitude (H)"];
+    if (neoSize > 30) data["Asteroids close to Earth (monthly)"].series[4]++;
+    else if (neoSize > 25)
+      data["Asteroids close to Earth (monthly)"].series[3]++;
+    else if (neoSize > 20)
+      data["Asteroids close to Earth (monthly)"].series[2]++;
+    else if (neoSize > 15)
+      data["Asteroids close to Earth (monthly)"].series[1]++;
+    else data["Asteroids close to Earth (monthly)"].series[0]++;
+  });
   return data;
 };
 const processSunInfo = (data, newSunInfo) => {
