@@ -174,6 +174,22 @@ const eventData = {
         name: "Wind(KM/H)", //will be displayed on the y-axis
         data: [0, 0, 0, 0, 0, 0, 0],
       },
+      {
+        name: "Humidity(%)", //will be displayed on the y-axis
+        data: [0, 0, 0, 0, 0, 0, 0],
+      },
+      {
+        name: "UV Level(0-10)", //will be displayed on the y-axis
+        data: [0, 0, 0, 0, 0, 0, 0],
+      },
+      {
+        name: "Cloude(%)", //will be displayed on the y-axis
+        data: [0, 0, 0, 0, 0, 0, 0],
+      },
+      {
+        name: "Rain(cm)", //will be displayed on the y-axis
+        data: [0, 0, 0, 0, 0, 0, 0],
+      },
     ],
   },
   "Events urgency": {

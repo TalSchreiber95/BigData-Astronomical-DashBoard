@@ -19,26 +19,44 @@ const scrapeWeatherData = async () => {
       const detailElement = $(detailId);
       const time = detailElement.find("h3[data-testid='daypartName']").text();
 
-      const temperature = detailElement
+      const temperature = parseNumber(detailElement
         .find("span[data-testid='TemperatureValue']")
         .text()
-        .split("°")[1];
+        .split("°")[1]);
       let condition = detailElement
         .find("div[data-testid='wxIcon'] span")
         .text();
       condition = setCondition(condition);
-      const precip = detailElement
+      const precip = parseNumber(detailElement
         .find("div[data-testid='Precip'] span")
         .text()
-        .split("%")[0];
+        .split("%")[0]);
       let wind = detailElement.find("div[data-testid='wind'] span").text();
-      wind = setWind(wind);
+      wind = parseNumber(wind);
+
+      const humidity = parseNumber(detailElement
+        .find("li[data-testid='HumiditySection'] span[data-testid='PercentageValue']")
+        .text().split("%")[0]);
+      const uvLevel = parseNumber(detailElement
+        .find("li[data-testid='uvIndexSection'] span[data-testid='UVIndexValue']")
+        .text().split(" מתוך ")[0]);
+      const cloudPercentage = parseNumber(detailElement
+        .find("li[data-testid='CloudCoverSection'] span[data-testid='PercentageValue']")
+        .text().split("%")[0]);
+      const rainCm = parseNumber(detailElement
+        .find("li[data-testid='AccumulationSection'] span[data-testid='AccumulationValue']")
+        .text().split(" ")[0]);
+
       hourDetails.push({
         time,
         temperature,
         condition,
         precip,
         wind,
+        humidity,
+        uvLevel,
+        cloudPercentage,
+        rainCm,
       });
     }
     console.log("Hourly Details:", hourDetails);
@@ -47,6 +65,7 @@ const scrapeWeatherData = async () => {
     console.log("Error:", error);
   }
 };
+
 const setCondition = (conditionText) => {
   switch (conditionText) {
     case "שמש":
@@ -64,9 +83,9 @@ const setCondition = (conditionText) => {
     default:
   }
 };
-const setWind = (wind) => {
+const parseNumber = (str) => {
   const numberPattern = /\d+/;
-  const matches = wind.match(numberPattern);
+  const matches = str.match(numberPattern);
 
   if (matches && matches.length > 0) {
     return parseInt(matches[0]);

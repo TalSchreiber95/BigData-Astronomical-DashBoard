@@ -132,6 +132,18 @@ const processSunWeather = (data, newWeatherData) => {
   data["Sun's Weather (Hourly)"].series[3].data = newWeatherData.map(
     (obj) => obj.wind
   );
+  data["Sun's Weather (Hourly)"].series[4].data = newWeatherData.map(
+    (obj) => obj.humidity
+  );
+  data["Sun's Weather (Hourly)"].series[5].data = newWeatherData.map(
+    (obj) => obj.uvLevel
+  );
+  data["Sun's Weather (Hourly)"].series[6].data = newWeatherData.map(
+    (obj) => obj.cloudPercentage
+  );
+  data["Sun's Weather (Hourly)"].series[7].data = newWeatherData.map(
+    (obj) => obj.rainCm
+  );
   return data;
 };
 const processBrightStarData = (data, newStars) => {
