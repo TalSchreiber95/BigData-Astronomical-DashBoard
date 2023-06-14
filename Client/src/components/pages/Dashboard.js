@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import GenericTable from "../genericComponents/GenericTable";
 import Page from "./Page";
@@ -9,51 +9,16 @@ import { CounterDetailsConfig } from "../config/counters";
 import ActionAreaCard from "../dataViews/ActionAreaCard";
 
 const Dashboard = ({ data }) => {
-  const makeText = (event) => {
-    let txt = "Astroid's Id: " +event["Astroid's Id"]+"\n"
-    txt += "Telescope's Name: " +event["Telescope's Name"]+"\n"
-    txt += "Date: " +event["Date"]+ event["Time"]+"\n"
-    txt += "Dec: " +event["Dec"]+" Ra: "+event["Ra"]+"\n"
-    txt+= "Urgency: "+event["Urgency"]+"\n"
-    return txt
-  }
-  const showMatchPic = (eventType) => {
-    switch (eventType) {
-      case "GRB":
-        return "https://www.hayadan.org.il/images/content3/2023/01/Artists-Conception-of-a-Gamma-Ray-Burst-777x4081-1.webp";
-      case "Rise Brightness Apparent":
-        return "https://www.space.fm/astronomy/images/diagrams/apparent.gif";
-      case "UV (Rise UV)":
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/UV_Index_NYC.png/1200px-UV_Index_NYC.png";
-      case "Rise Ray-X":
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/PIA20061_-_Andromeda_in_High-Energy_X-rays%2C_Figure_1.jpg/500px-PIA20061_-_Andromeda_in_High-Energy_X-rays%2C_Figure_1.jpg";
-      case "Comet":
-        return "https://exact-sciences.m.tau.ac.il/sites/exactsci.tau.ac.il/files/styles/reaserch_main_image_580_x_330/public/shavit_580X330.jpg?itok=rE7s0Cdx";
-      default:
-        return "";
-    }
-  };
-  const newAstroEvent = {
-    title:
-      data["astroEventTableObject"].body.length > 0
-        ? data["astroEventTableObject"].body[0]["Event Type"]
-        : "",
-    img:
-      data["astroEventTableObject"].body.length > 0
-        ? showMatchPic(data["astroEventTableObject"].body[0]["Event Type"])
-        : "",
-    text: data["astroEventTableObject"].body.length > 0? makeText(data["astroEventTableObject"].body[0]):"",
-    obj:
-      data["astroEventTableObject"].body.length > 0
-        ? data["astroEventTableObject"].body[0]
-        : {},
-  };
+
 
   const isImportentNeo = (row) => {
     return row["Potentially Hazardous"] === "Yes";
   };
   const hasHighUrgency = (row) => {
     return row["Urgency"] >= "4";
+  };
+  const hasHighUrgencyInText = (row) => {
+    return parseInt(row.text.split("Urgency: ")[1]) >= "4";
   };
 
   const isImportantStar = (row) => {
@@ -107,7 +72,7 @@ const Dashboard = ({ data }) => {
         })}
         {data["astroEventTableObject"].body.length > 0 && (
           <Grid item xs={12} sm={12} md={3}>
-            <ActionAreaCard data={newAstroEvent} isImportent={true} />
+            <ActionAreaCard data={data["Last Event"]} isImportant={hasHighUrgencyInText} />
           </Grid>
         )}
         {ChartDetailsConfig.map((item) => {
