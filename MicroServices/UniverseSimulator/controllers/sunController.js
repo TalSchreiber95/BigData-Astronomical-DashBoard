@@ -1,7 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
-
 const cheerio = require("cheerio");
+
 const scrapeWeatherData = async () => {
   try {
     const url =
@@ -19,33 +19,57 @@ const scrapeWeatherData = async () => {
       const detailElement = $(detailId);
       const time = detailElement.find("h3[data-testid='daypartName']").text();
 
-      const temperature = parseNumber(detailElement
-        .find("span[data-testid='TemperatureValue']")
-        .text()
-        .split("°")[1]);
+      const temperature = parseNumber(
+        detailElement
+          .find("span[data-testid='TemperatureValue']")
+          .text()
+          .split("°")[1]
+      );
       let condition = detailElement
         .find("div[data-testid='wxIcon'] span")
         .text();
       condition = setCondition(condition);
-      const precip = parseNumber(detailElement
-        .find("div[data-testid='Precip'] span")
-        .text()
-        .split("%")[0]);
+      const precip = parseNumber(
+        detailElement
+          .find("div[data-testid='Precip'] span")
+          .text()
+          .split("%")[0]
+      );
       let wind = detailElement.find("div[data-testid='wind'] span").text();
       wind = parseNumber(wind);
 
-      const humidity = parseNumber(detailElement
-        .find("li[data-testid='HumiditySection'] span[data-testid='PercentageValue']")
-        .text().split("%")[0]);
-      const uvLevel = parseNumber(detailElement
-        .find("li[data-testid='uvIndexSection'] span[data-testid='UVIndexValue']")
-        .text().split(" מתוך ")[0]);
-      const cloudPercentage = parseNumber(detailElement
-        .find("li[data-testid='CloudCoverSection'] span[data-testid='PercentageValue']")
-        .text().split("%")[0]);
-      const rainCm = parseNumber(detailElement
-        .find("li[data-testid='AccumulationSection'] span[data-testid='AccumulationValue']")
-        .text().split(" ")[0]);
+      const humidity = parseNumber(
+        detailElement
+          .find(
+            "li[data-testid='HumiditySection'] span[data-testid='PercentageValue']"
+          )
+          .text()
+          .split("%")[0]
+      );
+      const uvLevel = parseNumber(
+        detailElement
+          .find(
+            "li[data-testid='uvIndexSection'] span[data-testid='UVIndexValue']"
+          )
+          .text()
+          .split(" מתוך ")[0]
+      );
+      const cloudPercentage = parseNumber(
+        detailElement
+          .find(
+            "li[data-testid='CloudCoverSection'] span[data-testid='PercentageValue']"
+          )
+          .text()
+          .split("%")[0]
+      );
+      const rainCm = parseNumber(
+        detailElement
+          .find(
+            "li[data-testid='AccumulationSection'] span[data-testid='AccumulationValue']"
+          )
+          .text()
+          .split(" ")[0]
+      );
 
       hourDetails.push({
         time,
@@ -136,12 +160,32 @@ const getSunXRayActivities = async () => {
     throw error;
   }
 };
+
+const getSunImageLink = async () => {
+  try {
+    const response = await axios.get(
+      "https://www.nasa.gov/mission_pages/sdo/the-sun-now/index.html"
+    );
+    const $ = cheerio.load(response.data);
+    let sunImageLink = $("div.dnd-drop-wrapper a").attr("href");
+    sunImageLink = [
+      "https://www.nasa.gov/sites/default/files/styles/full_width/public/thumbnails/image/pia19821-nustar_xrt_sun.jpg?itok=lUj3uP0I",
+    ];
+    return sunImageLink;
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
+};
+
 const getSunInfo = async () => {
   const weatherData = await scrapeWeatherData();
   const sunXRayActivities = await getSunXRayActivities();
+  const sunImageLinks = await getSunImageLink();
   return {
     weatherData: weatherData,
     sunXRayActivities: sunXRayActivities,
+    sunImageLinks: sunImageLinks,
     Topic: "sunInfo",
   };
 };

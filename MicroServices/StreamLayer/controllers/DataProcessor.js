@@ -136,6 +136,7 @@ const processSunInfo = (data, newSunInfo) => {
   console.log("data: ", data);
   newEventsData = processSunWeather(data, newSunInfo.weatherData);
   newEventsData = processSunActivities(data, newSunInfo.sunXRayActivities);
+  newEventsData["Sun Image Links"] = newSunInfo.sunImageLinks;
   return data;
 };
 const processSunActivities = (data, newSunActivitis) => {

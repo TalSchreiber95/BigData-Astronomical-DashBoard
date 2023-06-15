@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 import GenericTable from "../genericComponents/GenericTable";
 import Page from "./Page";
 import CounterDetails from "../dataViews/CounterDetails";
@@ -72,7 +72,10 @@ const Dashboard = ({ data }) => {
         })}
         {data["astroEventTableObject"].body.length > 0 && (
           <Grid item xs={12} sm={12} md={3}>
-            <ActionAreaCard data={data["Last Event"]} isImportant={hasHighUrgencyInText} />
+            <ActionAreaCard
+              data={data["Last Event"]}
+              isImportant={hasHighUrgencyInText}
+            />
           </Grid>
         )}
         {ChartDetailsConfig.map((item) => {
@@ -87,6 +90,17 @@ const Dashboard = ({ data }) => {
             </Grid>
           );
         })}
+        <Grid  item xs={12} sm={4} md={6}>
+          <Box
+            component="img"
+            sx={{
+              height: 400,
+              width: 400,
+            }}
+            alt="Sun live picture"
+            src={data["Sun Image Links"][0]}
+          />
+        </Grid>
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12} sx={{ mt: 3 }}>
           <GenericTable
             tableObject={data["neoTableObject"]}
