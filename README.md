@@ -28,12 +28,12 @@
 <p>This will start the React application and display the Astronomical dashboard in your web browser.</p>
 <p>To start the Stream Layer subsystem, navigate to the /streamlayer directory and run the following commands on two separate terminals:</p>
 <pre><code>npm start
-</code><code>docker-compose up
+</code><code>docker compose up
 </code></pre>
 <p>This will start the Redis container in Docker and Kafka consumer on the cloud. The stream processing job will provide real-time data to the Astronomical dashboard.</p>
 <p>To start the Batch Layer subsystem, navigate to the /batchlayer directory and run the following commands on two separate terminals:</p>
 <pre><code>npm start
-</code><code>docker-compose up
+</code><code>docker compose up
 </code></pre>
 <p>This will start the batch processing job and generate the precomputed views. It will also start Elastic Search container in Docker and utilize cloud-based services such as MongoDB, Kafka consumer, and BigML.</p>
 <p>To start the Message Broker (Simulator) subsystem, navigate to the /UniverseSimulator directory and run the following command:</p>
