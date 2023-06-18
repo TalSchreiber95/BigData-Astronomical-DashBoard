@@ -124,7 +124,7 @@ export default function EnhancedTable({ data, loaded }) {
             variant='h5'
             id='tableTitle'
             component='div'>
-            Toppings Association Rules
+             Association Rules of Weather & Sun Data
           </Typography>
         </Toolbar>
         {!data.hasOwnProperty("message") ? (

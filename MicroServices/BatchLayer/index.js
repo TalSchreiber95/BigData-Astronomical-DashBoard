@@ -5,8 +5,11 @@ const app = express();
 const routes = require("./routes/routes.js");
 const kafkaConsumer = require("./models/kafkaConsumer");
 const PORT = process.env.PORT || 4000;
-const { saveToDB } = require("./models/mongo.js");
+const { saveSunToDB } = require("./models/mongo.js");
+const { saveWeatherToDB } = require("./models/mongo.js");
 const { indexDocument } = require("./models/elasticSearch");
+
+
 
 app.use(cors({}));
 app.use(express.json());
@@ -19,31 +22,22 @@ app.get("/", (req, res) => {
 
 app.use("/api", routes.routes);
 
+
 kafkaConsumer.on("data", function (msg) {
-  console.log(msg.value.toString());
   let newData = JSON.parse(msg.value);
+  console.log(`test newData.Topic = ${newData.Topic}`);
   if (newData !== null) {
     if (msg.topic == eventsTopic) {
-      if (newData.Topic === "astro") {
-        // do whatever you need with newData.astro
-      }
-      if (newData.Topic === "sunInfo") {
-        // should change to sunInfo
-        // do whatever you need with newData
-      }
-      if (newData.Topic === "neo") {
-        // should change to neoTopic
-        // do whatever you need with newData.neo
-      }
-      if (newData.Topic === "brightStar") {
-        // should change to brightStar
-        // do whatever you need with newData.selectedStar
+      if (newData.Topic === "sunInfoForAnalyze") {
+        newData['sunXRayActivities'].forEach((item) => {
+          saveSunToDB(item);  // for mongoDb 
+        });
+        newData['weatherData'].forEach((item) => {
+          saveWeatherToDB(item);  // for mongoDb
+        });
       }
     }
   }
-  // Note: you should save the necessary object in each used as described above
-  saveToDB(newData); // for mongoDb 
-  indexDocument(newData); // for elasticSearch
 });
 
 app.listen(PORT, () => {
