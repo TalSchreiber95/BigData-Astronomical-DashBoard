@@ -1,5 +1,6 @@
 require("dotenv").config();
-const { getOrders } = require("../models/mongo");
+const { getWeatherDB } = require("../models/mongo");
+const { getSunDB } = require("../models/mongo");
 const bigml = require("bigml");
 const { writeFileSync } = require("fs");
 
@@ -7,16 +8,17 @@ const connection = new bigml.BigML(
   process.env.BIGML_USERNAME,
   process.env.BIGML_API_KEY
 );
-const DATASET_PATH = "./toppingsDataset.csv";
-// const RESULTS_PATH = "./association_rules.json";
+const DATASET_PATH = "./sunDataset.csv";
 
 const buildModel = async (req, res) => {
   /* Prepare the Dataset */
-  const orders = await getOrders(req.query); // Get all orders from MongoDB
-  // const orders = fakeData; // Get all orders from MongoDB
-  const toppings = orders?.map((order) => order.toppings);
-  // console.log(toppings);
-  saveAsCSV(toppings);
+  console.log(`Start get db from mongo`);
+
+  const sunDB = await getSunDB(); // Get all Sun DB from MongoDB
+  const weatherDB = await getWeatherDB(); // Get all Sun DB from MongoDB
+  console.log(`Done get db from mongo`);
+
+  writeMatchingDataToCSV(weatherDB, sunDB);
 
   /* Create the model */
   const source = new bigml.Source(connection);
@@ -28,6 +30,7 @@ const buildModel = async (req, res) => {
 
     /* Source created successfully */
     console.log(`Source created: ${sourceInfo.resource}`);
+    const excludeFields = ['time', 'date'];
 
     const dataset = new bigml.Dataset(connection);
     dataset.create(sourceInfo, function (error, datasetInfo) {
@@ -38,11 +41,28 @@ const buildModel = async (req, res) => {
 
       /* Dataset created successfully */
       console.log(`Dataset created: ${datasetInfo.resource}`);
+
       const association = new bigml.Association(connection);
 
       association.create(
-        datasetInfo,
-        { search_strategy: "support" },
+        datasetInfo.resource,
+        {
+          "max_k": 100,
+          "max_lhs": 4,
+          "search_strategy": "support",
+          "min_support": 0,
+          "min_confidence": 0,
+          "min_leverage": 0,
+          "min_lift": 1,
+          "significance_level": 0.05,
+          "name": "bigml_64879b6979c6024ede57bbe1",
+          "discretization": {
+              "pretty": true,
+              "trim": 0,
+              "size": 5,
+              "type": "population"
+          }
+      },
         function (error, associationInfo) {
           if (error) {
             console.log("Error creating association");
@@ -55,6 +75,7 @@ const buildModel = async (req, res) => {
           getAssociationRules(associationInfo.resource, res);
         }
       );
+
     });
   });
 };
@@ -82,8 +103,15 @@ const getAssociationRules = (associationId, res) => {
       res?.status(500)?.send({ message: `No items were found (${associationId})` });
       return;
     }
+    const fields = modelInfo.object.associations.fields;
+    console.log("fields: ", fields);
+    if (!fields) {
+      console.error(`No fields found (${associationId})`);
+      res?.status(500)?.send({ message: `No fields were found (${associationId})` });
+      return;
+    }
 
-    const sets = extractRules(rules, items);
+    const sets = extractRules(rules, items, fields);
     sets?.length && console.log(`Found ${sets.length} association rules`);
     res?.status(200)?.send(sets);
 
@@ -94,9 +122,10 @@ const getAssociationRules = (associationId, res) => {
 /**
  * @param rules - Rules object from BigML modelInfo object
  * @param items - Item set from BigML modelInfo object
+ * @param fields - A dictionary with an entry per field in the dataset
  * @returns - An array containing association rules determined in the dataset by the model.
  */
-const extractRules = (rules, items) => {
+const extractRules = (rules, items, fields) => {
   const sets = [];
   for (let i = 0; i < rules.length; ++i) {
     const antecedent = rules[i].lhs;
@@ -105,12 +134,30 @@ const extractRules = (rules, items) => {
     let consequents = "";
 
     for (let i = 0; i < antecedent.length; ++i) {
-      antecedents += items[antecedent[i]].name;
+      if (fields[items[antecedent[i]].field_id].optype == "categorical"){
+          antecedents += fields[items[antecedent[i]].field_id].name;
+          antecedents +=  " = " + items[antecedent[i]].name;
+      }
+      else{
+          if (items[antecedent[i]].bin_start != null) antecedents += items[antecedent[i]].bin_start + " < ";
+          antecedents += fields[items[antecedent[i]].field_id].name;
+          if (items[antecedent[i]].bin_end != null) antecedents +=  " <= " + items[antecedent[i]].bin_end;
+     }
+
       if (i < antecedent.length - 1) antecedents += ", ";
     }
     for (let i = 0; i < consequent.length; ++i) {
-      consequents += items[consequent[i]].name;
-      if (i < consequent.length - 1) consequents += ", ";
+      if (fields[items[consequent[i]].field_id].optype == "categorical"){
+          consequents += fields[items[consequent[i]].field_id].name;
+          consequents +=  " = " + items[consequent[i]].name;
+      }
+      else{
+          if (items[consequent[i]].bin_start != null) consequents += items[consequent[i]].bin_start + " < ";
+          consequents += fields[items[consequent[i]].field_id].name;
+          if (items[consequent[i]].bin_end != null) consequents +=  " <= " + items[consequent[i]].bin_end;
+
+          if (i < consequent.length - 1) consequents += ", ";
+        }
     }
     const support = rules[i].support[0] * 100 + "%";
     const confidence = rules[i].confidence * 100 + "%";
@@ -126,27 +173,29 @@ const extractRules = (rules, items) => {
   return sets;
 };
 
-const saveAsCSV = (data) => {
-  
-  console.log("Writing dataset");
-  let dataset = "";
-  data?.forEach((entry) => (dataset += entry.join(",") + "\n"));
+const writeMatchingDataToCSV = (weatherData, sunXRayActivities) => {
+  console.log("Writing matching data to CSV");
+  let dataset = "temperature,condition,precip,wind,humidity,uvLevel,cloudPercentage,rainCm,xRayRate,xRayEnergy,electron_correction\n";
+
+  weatherData.forEach((weatherItem) => {
+    const { dateWeather, time } = weatherItem;
+
+    sunXRayActivities.forEach((sunItem) => {
+      const { timeTag, date, xRayRate, xRayEnergy, electron_correction } = sunItem;
+
+      if (timeTag === time && date == dateWeather) {
+        const row = `${weatherItem.temperature},${weatherItem.condition},${weatherItem.precip},${weatherItem.wind},${weatherItem.humidity},${weatherItem.uvLevel},${weatherItem.cloudPercentage},${weatherItem.rainCm},${xRayRate},${xRayEnergy},${electron_correction}\n`;
+        dataset += row;
+      }
+    });
+  });
 
   try {
     writeFileSync(DATASET_PATH, dataset);
-    console.log("New dataset created");
+    console.log("Matching data written to csv");
   } catch (err) {
     console.error(err);
   }
 };
-
-/* Uncomment this function to test this module */
-// (async () => {
-//   await mongoose.connect(process.env.MONGO_URL, {
-//     useUnifiedTopology: true,
-//     useNewUrlParser: true,
-//   });
-//   await buildModel(undefined, undefined);
-// })();
 
 module.exports = { buildModel, getAssociationRules };

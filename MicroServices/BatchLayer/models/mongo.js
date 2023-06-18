@@ -2,22 +2,45 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-// Order model
-const Order = mongoose.model(
-  "Order",
-  Schema({
-    order_id: String,
-    branch_id: String,
-    branch: String,
-    region: String,
-    date: String,
-    time: String,
-    toppings: [String],
-    completed: Boolean,
-    handle_time: Number,
-    topic: String,
-  })
+
+const SunSchema = new mongoose.Schema({
+  date: String,
+  timeTag: String,
+  xRayRate: Number,
+  xRayEnergy: Number,
+  electron_correction: Number
+});
+
+SunSchema.index({ timeTag: 1, date: 1, xRayRate: 1, xRayEnergy: 1, electron_correction: 1 }, { unique: true });
+
+// Sun model
+const Sun = mongoose.model(
+  "Sun",
+  SunSchema
 );
+
+
+const WeatherSchema = new mongoose.Schema({
+  dateWeather: String,
+  time: String,
+  temperature: String,
+  condition: String,
+  precip: String,
+  wind: Number,
+  humidity: Number,
+  uvLevel: Number,
+  cloudPercentage: Number,
+  rainCm: Number,
+});
+
+WeatherSchema.index({ dateWeather: 1, time: 1, temperature: 1, condition: 1, precip: 1, wind:1, humidity: 1, uvLevel: 1, cloudPercentage: 1, rainCm: 1 }, { unique: true });
+
+// Weather model
+const Weather = mongoose.model(
+  "Weather",
+  WeatherSchema
+);
+
 
 // AstroEvent model
 const AstroEvent = mongoose.model(
@@ -46,26 +69,56 @@ db.once("open", function () {
   console.log("MongoDB Connected succesfully!");
 });
 
-const saveToDB = async (order) => {
+
+const saveSunToDB = async (sunData) => {
+    const newSun = Sun(sunData);
+    newSun.save( (err, doc) => {
+        if (err && err.code === 11000) {
+          // Duplicate key error, sun data already exists
+          console.log('Sun data already exists.');
+        } else if (err) {
+          // Other error occurred
+          console.error('Error saving Sun:', err);
+        } else {
+          // Sun saved successfully
+          console.log(`Document Sun inserted succussfully to MongoDB!`);
+        }
+      });
+    };
+
+const getSunDB = async (query = {}) => {
   try {
-    const newOrder = Order(order);
-    newOrder.save(function (err, doc) {
-      if (err) return console.error(err);
-      console.log("Document inserted succussfully to MongoDB!");
-    });
+    const sunDB = await Sun.find(query);
+    console.log("sunDB from MongoDB: ", sunDB);
+    return sunDB;
   } catch (err) {
     console.error(err);
   }
 };
 
-const getOrders = async (query = {}) => {
+const saveWeatherToDB = async (weatherData) => {
+    const newWeather = Weather(weatherData);
+    newWeather.save(function (err, doc) {
+      if (err && err.code === 11000) {
+        // Duplicate key error, Weather data already exists
+        console.log('Weather data already exists.');
+      } else if (err) {
+        // Other error occurred
+        console.error('Error saving Weather:', err);
+      } else {
+      console.log("Document Weather inserted succussfully to MongoDB!");
+    }
+  });
+};
+
+const getWeatherDB = async (query = {}) => {
   try {
-    const orders = await Order.find(query);
-    // console.log("orders: ", orders);
-    return orders;
+    const weatherDB = await Weather.find(query);
+    console.log("weatherDB from MongoDB: ", weatherDB);
+    return weatherDB;
   } catch (err) {
     console.error(err);
   }
 };
 
-module.exports = { saveToDB, getOrders };
+module.exports = { saveSunToDB, getSunDB, saveWeatherToDB, getWeatherDB };

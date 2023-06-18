@@ -2,10 +2,6 @@ import { Typography, Button, Card } from "@mui/material";
 import DateSelector from "./DateSelector";
 
 export default function DatesRangePicker({
-  fromDate,
-  toDate,
-  setFromDate,
-  setToDate,
   onBuildModel,
   loaded,
 }) {
@@ -18,10 +14,6 @@ export default function DatesRangePicker({
         m: 2,
         p: 1,
       }}>
-      <Typography>from</Typography>
-      <DateSelector date={fromDate} setDate={setFromDate} />
-      <Typography>to</Typography>
-      <DateSelector date={toDate} setDate={setToDate} />
       {!loaded ? (
         <Button disabled>Bulding Model ...</Button>
       ) : (
