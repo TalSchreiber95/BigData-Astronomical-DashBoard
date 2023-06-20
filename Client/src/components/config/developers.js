@@ -16,12 +16,12 @@ export const developers = [
     image: "link2",
   },
   {
-    name: "name3",
-    role: "role",
-    mail: "mail3",
-    linkedin: "link3",
-    github: "link3",
-    image: "link3",
+    name: "Yossi Elias",
+    role: "Backend Developer",
+    mail: "yosi.elias@msmail.ariel.ac.il",
+    linkedin: "https://il.linkedin.com/in/yosi-elias-992018213",
+    github: "https://github.com/YosiElias",
+    image: "https://avatars.githubusercontent.com/u/73485442?s=400&v=4",
   },
   {
     name: "name4",

@@ -18,7 +18,7 @@ export default function Routes() {
     message: "Search For Orders By Branch and Date!",
   });
   const [associationRules, setAssociationRules] = useState({
-    message: "Choose Range of Dates For Toppings Associations Rules !",
+    message: "Click on BUILD to create associatoin model",
   });
   const [analyzeLoaded, setAnalyzeLoaded] = useState(true);
   const [searchLoaded, setSearchLoaded] = useState(true);
