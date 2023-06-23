@@ -1,32 +1,39 @@
 import React, { useState } from "react";
 import Page from "./Page";
-import BranchDatePicker from "../utils/BranchDatePicker";
-import OrdersTable from "../dataViews/OrdersTable";
+import EventDatePicker from "../utils/EventDatePicker";
+import EventsTable from "../dataViews/EventsTable";
 import dayjs from "dayjs";
 
-const Search = ({ orders, searchOrders, loaded }) => {
-  const [currentBranch, setCurrentBranch] = useState("");
-  const [date, setDate] = useState(() => dayjs("2023-03-08T00:00"));
+const Search = ({ events, searchEvents, loaded }) => {
+  const [currentEventType, setCurrentEventType] = useState("");
+  const [fromDate, setFromDate] = useState(() => dayjs("2023-02-22T00:00"));
+  const [toDate, setToDate] = useState(() => dayjs("2023-02-22T00:00"));
 
   const onSearch = () => {
-    searchOrders({ branch: currentBranch, date: date.format("YYYY-MM-DD") });
+    searchEvents({
+      eventType: currentEventType,
+      fromDate: fromDate.format("YYYY-MM-DD"),
+      toDate: toDate.format("YYYY-MM-DD"),
+    });
   };
 
-  const showAllOrders = () => {
-    searchOrders();
+  const showAllEvents = () => {
+    searchEvents();
   };
 
   return (
-    <Page title='Search'>
-      <BranchDatePicker
-        currentBranch={currentBranch}
-        setCurrentBranch={setCurrentBranch}
-        date={date}
-        setDate={setDate}
+    <Page title="Search">
+      <EventDatePicker
+        currentEventType={currentEventType}
+        setCurrentEventType={setCurrentEventType}
+        fromDate={fromDate}
+        toDate={toDate}
+        setFromDate={setFromDate}
+        setToDate={setToDate}
         onSearch={onSearch}
-        showAllOrders={showAllOrders}
+        showAllEvents={showAllEvents}
       />
-      <OrdersTable data={orders} loaded={loaded} />
+      <EventsTable data={events} loaded={loaded} />
     </Page>
   );
 };

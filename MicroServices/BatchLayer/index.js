@@ -9,8 +9,6 @@ const { saveSunToDB } = require("./models/mongo.js");
 const { saveWeatherToDB } = require("./models/mongo.js");
 const { indexDocument } = require("./models/elasticSearch");
 
-
-
 app.use(cors({}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -22,19 +20,21 @@ app.get("/", (req, res) => {
 
 app.use("/api", routes.routes);
 
-
 kafkaConsumer.on("data", function (msg) {
   let newData = JSON.parse(msg.value);
   console.log(`test newData.Topic = ${newData.Topic}`);
   if (newData !== null) {
     if (msg.topic == eventsTopic) {
       if (newData.Topic === "sunInfoForAnalyze") {
-        newData['sunXRayActivities'].forEach((item) => {
-          saveSunToDB(item);  // for mongoDb 
+        newData["sunXRayActivities"].forEach((item) => {
+          saveSunToDB(item); // for mongoDb
         });
-        newData['weatherData'].forEach((item) => {
-          saveWeatherToDB(item);  // for mongoDb
+        newData["weatherData"].forEach((item) => {
+          saveWeatherToDB(item); // for mongoDb
         });
+      }
+      if (newData.Topic === "astro") {
+        indexDocument(newData);
       }
     }
   }

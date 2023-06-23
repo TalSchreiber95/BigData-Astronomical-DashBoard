@@ -1,7 +1,11 @@
-export const ordersHeadCells = [
+export const eventsHeadCells = [
   {
-    id: "branch",
-    label: "Branch",
+    id: "eventId",
+    label: "Event ID",
+  },
+  {
+    id: "telescope",
+    label: "Telescope",
   },
   {
     id: "date",
@@ -12,32 +16,20 @@ export const ordersHeadCells = [
     label: "Time",
   },
   {
-    id: "timehandle",
-    label: "Handle Duration (Min)",
+    id: "ra",
+    label: "RA",
   },
   {
-    id: "amount",
-    label: "Amount",
+    id: "dec",
+    label: "DEC",
   },
   {
-    id: "mushrooms",
-    label: "Mushrooms",
+    id: "event",
+    label: "Event type",
   },
   {
-    id: "onion",
-    label: "Onion",
-  },
-  {
-    id: "olives",
-    label: "Olives",
-  },
-  {
-    id: "corn",
-    label: "Corn",
-  },
-  {
-    id: "tomato",
-    label: "Tomato",
+    id: "urgency",
+    label: "Urgency",
   },
 ];
 

@@ -6,11 +6,11 @@ import {
   IconButton,
   Tooltip,
   Card,
+  Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import BorderAllIcon from "@mui/icons-material/BorderAll";
 import DateSelector from "./DateSelector";
-import Branches from "../config/branches";
+import eventTypes from "../config/eventTypes";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -22,32 +22,41 @@ const MenuProps = {
 };
 
 export default function BranchDatePicker({
-  currentBranch,
-  setCurrentBranch,
-  date,
-  setDate,
+  currentEventType,
+  setCurrentEventType,
+  fromDate,
+  toDate,
+  setFromDate,
+  setToDate,
   onSearch,
-  showAllOrders,
+  showAllEvents,
 }) {
   return (
     <Card
       sx={{
         display: "flex",
         justifyContent: "space-around",
+        alignItems: "center",
         m: 2,
         p: 1,
-      }}>
-      <FormControl size='small' sx={{ m: 2, width: "25%" }}>
-        <InputLabel>Branch</InputLabel>
+      }}
+    >
+      <Typography>from</Typography>
+      <DateSelector date={fromDate} setDate={setFromDate} />
+      <Typography>to</Typography>
+      <DateSelector date={toDate} setDate={setToDate} />
+      <FormControl size="small" sx={{ m: 2, width: "25%" }}>
+        <InputLabel>Event type</InputLabel>
         <Select
-          value={currentBranch}
-          label='Branch'
-          onChange={(event) => setCurrentBranch(event.target.value)}
-          MenuProps={MenuProps}>
-          <MenuItem value=''>
+          value={currentEventType}
+          label="Event Type"
+          onChange={(event) => setCurrentEventType(event.target.value)}
+          MenuProps={MenuProps}
+        >
+          <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          {Branches.map((item) => {
+          {eventTypes.map((item) => {
             return (
               <MenuItem key={item} value={item}>
                 {item}
@@ -56,15 +65,9 @@ export default function BranchDatePicker({
           })}
         </Select>
       </FormControl>
-      <DateSelector date={date} setDate={setDate} />
-      <Tooltip title='Search'>
-        <IconButton color='info' onClick={onSearch}>
+      <Tooltip title="Search">
+        <IconButton color="info" onClick={onSearch}>
           <SearchIcon />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title='Show All Orders'>
-        <IconButton color='info' onClick={showAllOrders}>
-          <BorderAllIcon />
         </IconButton>
       </Tooltip>
     </Card>
