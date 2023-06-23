@@ -147,8 +147,7 @@ export default function EnhancedTable({ data, loaded }) {
               <TableBody>
                 {stableSort(data, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((event, index) => {
-                    const row = event.astro;
+                  .map((row, index) => {
                     return (
                       <TableRow hover key={index}>
                         {/* <TableCell padding='normal'></TableCell> */}

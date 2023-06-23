@@ -1,37 +1,35 @@
 import React, { useState } from "react";
 import Page from "./Page";
-import EventDatePicker from "../utils/EventDatePicker";
+import EventPicker from "../utils/EventPicker";
 import EventsTable from "../dataViews/EventsTable";
-import dayjs from "dayjs";
 
 const Search = ({ events, searchEvents, loaded }) => {
-  const [currentEventType, setCurrentEventType] = useState("");
-  const [fromDate, setFromDate] = useState(() => dayjs("2023-02-22T00:00"));
-  const [toDate, setToDate] = useState(() => dayjs("2023-02-22T00:00"));
+  const [selectedEventType, setSelectedEventType] = useState("");
+  const [selectedTelescope, setSelectedTelescope] = useState("");
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
 
   const onSearch = () => {
     searchEvents({
-      eventType: currentEventType,
-      fromDate: fromDate.format("YYYY-MM-DD"),
-      toDate: toDate.format("YYYY-MM-DD"),
+      eventType: selectedEventType !== null ? selectedEventType : undefined,
+      telescope: selectedTelescope !== null ? selectedTelescope : undefined,
+      fromDate: fromDate !== null ? fromDate.format("YYYY-MM-DD") : undefined,
+      toDate: toDate !== null ? toDate.format("YYYY-MM-DD") : undefined,
     });
-  };
-
-  const showAllEvents = () => {
-    searchEvents();
   };
 
   return (
     <Page title="Search">
-      <EventDatePicker
-        currentEventType={currentEventType}
-        setCurrentEventType={setCurrentEventType}
+      <EventPicker
+        selectedEventType={selectedEventType}
+        setSelectedEventType={setSelectedEventType}
+        selectedTelescope={selectedTelescope}
+        setSelectedTelescope={setSelectedTelescope}
         fromDate={fromDate}
         toDate={toDate}
         setFromDate={setFromDate}
         setToDate={setToDate}
         onSearch={onSearch}
-        showAllEvents={showAllEvents}
       />
       <EventsTable data={events} loaded={loaded} />
     </Page>

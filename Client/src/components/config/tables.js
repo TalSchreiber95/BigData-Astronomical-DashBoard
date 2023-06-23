@@ -1,34 +1,34 @@
 export const eventsHeadCells = [
   {
-    id: "eventId",
+    id: "Astroid's Id",
     label: "Event ID",
   },
   {
-    id: "telescope",
+    id: "Telescope's Name",
     label: "Telescope",
   },
   {
-    id: "date",
+    id: "Date",
     label: "Date",
   },
   {
-    id: "time",
+    id: "Time",
     label: "Time",
   },
   {
-    id: "ra",
+    id: "Ra",
     label: "RA",
   },
   {
-    id: "dec",
+    id: "Dec",
     label: "DEC",
   },
   {
-    id: "event",
+    id: "Event Type",
     label: "Event type",
   },
   {
-    id: "urgency",
+    id: "Urgency",
     label: "Urgency",
   },
 ];

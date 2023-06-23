@@ -7,10 +7,12 @@ import {
   Tooltip,
   Card,
   Typography,
+  Button,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import DateSelector from "./DateSelector";
 import eventTypes from "../config/eventTypes";
+import telescopes from "../config/telescopesList";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -21,16 +23,24 @@ const MenuProps = {
   },
 };
 
-export default function BranchDatePicker({
-  currentEventType,
-  setCurrentEventType,
+export default function EventPicker({
+  selectedEventType,
+  setSelectedEventType,
+  selectedTelescope,
+  setSelectedTelescope,
   fromDate,
   toDate,
   setFromDate,
   setToDate,
   onSearch,
-  showAllEvents,
 }) {
+  const handleClearFilter = () => {
+    setSelectedEventType(null);
+    setSelectedTelescope(null);
+    setFromDate(null);
+    setToDate(null);
+  };
+
   return (
     <Card
       sx={{
@@ -48,9 +58,9 @@ export default function BranchDatePicker({
       <FormControl size="small" sx={{ m: 2, width: "25%" }}>
         <InputLabel>Event type</InputLabel>
         <Select
-          value={currentEventType}
+          value={selectedEventType}
           label="Event Type"
-          onChange={(event) => setCurrentEventType(event.target.value)}
+          onChange={(event) => setSelectedEventType(event.target.value)}
           MenuProps={MenuProps}
         >
           <MenuItem value="">
@@ -65,11 +75,40 @@ export default function BranchDatePicker({
           })}
         </Select>
       </FormControl>
+      <FormControl size="small" sx={{ m: 2, width: "25%" }}>
+        <InputLabel>Telescope</InputLabel>
+        <Select
+          value={selectedTelescope}
+          label="Telescope"
+          onChange={(event) => setSelectedTelescope(event.target.value)}
+          MenuProps={MenuProps}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          {telescopes.map((item) => {
+            return (
+              <MenuItem key={item} value={item}>
+                {item}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
       <Tooltip title="Search">
         <IconButton color="info" onClick={onSearch}>
           <SearchIcon />
         </IconButton>
       </Tooltip>
+      <Button
+        size="small"
+        sx={{ marginLeft: "15px" }}
+        onClick={handleClearFilter}
+        variant="contained"
+        color="primary"
+      >
+        Clear filters
+      </Button>
     </Card>
   );
 }

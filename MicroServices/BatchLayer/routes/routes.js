@@ -4,7 +4,7 @@ const bigMlController = require("../controllers/bigML.controller");
 const elasticController = require("../controllers/elasticSearch.controller");
 
 router.get("/buildModel", bigMlController.buildModel);
-router.get("/ordersByDate", elasticController.getOrdersByDate);
+router.get("/eventsByDate", elasticController.getEventsByDate);
 
 module.exports = {
   routes: router,

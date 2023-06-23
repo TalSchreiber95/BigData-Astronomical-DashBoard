@@ -14,8 +14,8 @@ const socket = io.connect("http://localhost:4001");
 
 export default function Routes() {
   const [data, setData] = useState(DefaultDataConfig);
-  const [orders, setOrders] = useState({
-    message: "Search For Orders By Branch and Date!",
+  const [events, setEvents] = useState({
+    message: "Search For Events By topic!",
   });
   const [associationRules, setAssociationRules] = useState({
     message: "Click on BUILD to create associatoin model",
@@ -24,7 +24,7 @@ export default function Routes() {
   const [searchLoaded, setSearchLoaded] = useState(true);
 
   useEffect(() => {
-    searchOrders();
+    searchEvents();
   }, []);
 
   useEffect(() => {
@@ -34,21 +34,21 @@ export default function Routes() {
     });
   }, [socket]);
 
-  const searchOrders = async (query) => {
-    query && console.log(query);
-    setOrders({ message: "Loading..." });
+  const searchEvents = async (query) => {
+    // query && console.log(query);
+    setEvents({ message: "Loading..." });
     setSearchLoaded(false);
-    await axios("http://localhost:4000/api/ordersByDate", {
+    await axios("http://localhost:4000/api/eventsByDate", {
       params: query,
     })
       .then((res) => {
         console.log(res.data);
-        setOrders(res.data);
+        setEvents(res.data);
         setSearchLoaded(true);
       })
       .catch((err) => {
-        setOrders({
-          message: "Something went wrong, please contact with developer teams!",
+        setEvents({
+          message: `Something went wrong, please contact with developer teams!`,
         });
         console.error(err);
       });
@@ -86,8 +86,8 @@ export default function Routes() {
           path: "search",
           element: (
             <Search
-              orders={orders}
-              searchOrders={searchOrders}
+              events={events}
+              searchEvents={searchEvents}
               loaded={searchLoaded}
             />
           ),
