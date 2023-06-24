@@ -12,6 +12,7 @@ const makeText = (event) => {
   txt += "Date: " + event["Date"] + event["Time"] + "\n";
   txt += "Dec: " + event["Dec"] + " Ra: " + event["Ra"] + "\n";
   txt += "Urgency: " + event["Urgency"] + "\n";
+  txt += "Title HD: "+event["Title HD"]
   return txt;
 };
 const showMatchPic = (eventType) => {
@@ -181,14 +182,9 @@ const processSunWeather = (data, newWeatherData) => {
   );
   return data;
 };
-const processBrightStarData = (data, newStars) => {
-  data["brightStars"].body.push(newStars);
-  return data;
-};
 
 module.exports = {
   processEventsData,
   processNeoData,
   processSunInfo,
-  processBrightStarData,
 };
