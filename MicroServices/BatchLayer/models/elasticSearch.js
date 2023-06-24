@@ -68,12 +68,12 @@ async function searchDocuments({
   }
 }
 
-async function indexDocument(order) {
+async function indexDocument(document) {
   try {
     const response = await client.index({
       index: "events",
-      id: order.order_id,
-      document: order,
+      id: document["Astroid's Id"],
+      document: document,
     });
     if (response.result == "created") {
       // console.log("Document Indexed Successfully");
