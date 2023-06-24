@@ -24,9 +24,10 @@ redis
   await redis.connect();
   if (await redis.exists("events_data")) {
     const ordersData = await redis.json.GET("events_data");
-    console.log("aaa", ordersData);
+    console.log("new ordersData: ", ordersData);
   } else {
-    redis.json.SET("events_data", "$", initialData);
+    const initialDataAwait =await initialData()
+    redis.json.SET("events_data", "$", initialDataAwait);
     const expireToday = parseInt(new Date().setHours(23, 59, 59, 999) / 1000);
     redis.EXPIREAT("events_data", expireToday);
     console.log("Data Initialized");

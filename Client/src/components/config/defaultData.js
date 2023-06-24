@@ -1,64 +1,4 @@
-export const DefaultDataConfig1 = {
-  "Today's Orders": 0,
-  "Total Open Orders": 0,
-  "Average Handle Time": 0,
-  "Open Branches": 0,
-  "Orders By Region": {
-    options: {
-      labels: ["North", "Center", "South", "Haifa", "Dan"],
-    },
-    series: [0, 0, 0, 0, 0],
-  }, //our data,
-  "Orders During Today": {
-    options: {
-      xaxis: {
-        categories: [
-          "10:00",
-          "12:00",
-          "14:00",
-          "16:00",
-          "18:00",
-          "20:00",
-          "22:00",
-        ], //will be displayed on the x-asis
-      },
-    },
-    series: [
-      {
-        name: "Orders Amount", //will be displayed on the y-axis
-        data: [0, 0, 0, 0, 0, 0, 0],
-      },
-    ],
-  },
 
-  "Top 5 Shortest Handle Time Branches": {
-    options: {
-      xaxis: {
-        categories: ["Eilat", "Haifa", "Tel Aviv", "Rishon", "Karmiel"], //will be displayed on the x-asis
-      },
-    },
-    series: [
-      {
-        name: "Duration (Minutes)", //will be displayed on the y-axis
-        data: [0, 0, 0, 0, 0],
-      },
-    ],
-  },
-  "Top 5 Pizza Toppings": {
-    options: {
-      xaxis: {
-        categories: ["Corn", "Mushrooms", "Onion", "Olives", "Tomato"], //will be displayed on the x-asis
-      },
-    },
-
-    series: [
-      {
-        name: "Amount", //will be displayed on the y-axis
-        data: [0, 0, 0, 0, 0],
-      },
-    ],
-  },
-};
 const createTimeList = () => {
   var currentTime = new Date();
   var timeList = [];
@@ -73,31 +13,6 @@ const createTimeList = () => {
   }
   return timeList;
 };
-const makeText = (event) => {
-  let txt = "Astroid's Id: " + event["Astroid's Id"] + "\n";
-  txt += "Telescope's Name: " + event["Telescope's Name"] + "\n";
-  txt += "Date: " + event["Date"] + event["Time"] + "\n";
-  txt += "Dec: " + event["Dec"] + " Ra: " + event["Ra"] + "\n";
-  txt += "Urgency: " + event["Urgency"] + "\n";
-  return txt;
-};
-const showMatchPic = (eventType) => {
-  switch (eventType) {
-    case "GRB":
-      return "https://www.hayadan.org.il/images/content3/2023/01/Artists-Conception-of-a-Gamma-Ray-Burst-777x4081-1.webp";
-    case "Rise Brightness Apparent":
-      return "https://www.space.fm/astronomy/images/diagrams/apparent.gif";
-    case "UV (Rise UV)":
-      return "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/UV_Index_NYC.png/1200px-UV_Index_NYC.png";
-    case "Rise Ray-X":
-      return "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/PIA20061_-_Andromeda_in_High-Energy_X-rays%2C_Figure_1.jpg/500px-PIA20061_-_Andromeda_in_High-Energy_X-rays%2C_Figure_1.jpg";
-    case "Comet":
-      return "https://exact-sciences.m.tau.ac.il/sites/exactsci.tau.ac.il/files/styles/reaserch_main_image_580_x_330/public/shavit_580X330.jpg?itok=rE7s0Cdx";
-    default:
-      return "";
-  }
-};
-
 export const DefaultDataConfig = {
   "Today's Events": 0,
   "Total of close asteroids (monthly)": 0,
@@ -224,6 +139,7 @@ export const DefaultDataConfig = {
       "Dec",
       "Event Type",
       "Urgency",
+      "Title HD",
     ],
     body: [],
   },
