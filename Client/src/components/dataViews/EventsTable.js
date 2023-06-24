@@ -16,7 +16,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
 import { eventsHeadCells } from "../config/tables";
-import { LinearProgress } from "@mui/material";
+import { Button, LinearProgress } from "@mui/material";
+import { useEffect } from "react";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -94,6 +95,7 @@ export default function EnhancedTable({ data, loaded }) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [stopFlashing, setStopFlashing] = React.useState(false);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -114,10 +116,18 @@ export default function EnhancedTable({ data, loaded }) {
     setDense(event.target.checked);
   };
 
+  const handleStopFlashing = () => {
+    setStopFlashing(!stopFlashing);
+  };
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
+  useEffect(() => {
+    if (!loaded) {
+      setPage(0);
+    }
+  }, [loaded]);
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
@@ -149,16 +159,32 @@ export default function EnhancedTable({ data, loaded }) {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     return (
-                      <TableRow hover key={index}>
-                        {/* <TableCell padding='normal'></TableCell> */}
-                        <TableCell>{row["Astroid's Id"]}</TableCell>
-                        <TableCell>{row["Telescope's Name"]}</TableCell>
-                        <TableCell>{row.Date}</TableCell>
-                        <TableCell>{row.Time}</TableCell>
-                        <TableCell>{row.Ra}</TableCell>
-                        <TableCell>{row.Dec}</TableCell>
-                        <TableCell>{row["Event Type"]}</TableCell>
-                        <TableCell>{row.Urgency}</TableCell>
+                      <TableRow
+                        hover
+                        key={index}
+                        style={
+                          row.Urgency && row.Urgency >= 4 && !stopFlashing
+                            ? { animation: "flash 1s infinite" }
+                            : {}
+                        }
+                      >
+                        <TableCell>
+                          {row["Astroid's Id"] && row["Astroid's Id"]}
+                        </TableCell>
+                        <TableCell>
+                          {row["Telescope's Name"] && row["Telescope's Name"]}
+                        </TableCell>
+                        <TableCell>{row.Date && row.Date}</TableCell>
+                        <TableCell>{row.Time && row.Time}</TableCell>
+                        <TableCell>{row.Ra && row.Ra}</TableCell>
+                        <TableCell>{row.Dec && row.Dec}</TableCell>
+                        <TableCell>
+                          {row["Event Type"] && row["Event Type"]}
+                        </TableCell>
+                        <TableCell>{row["Title HD"] && row.Urgency}</TableCell>
+                        <TableCell>
+                          {row["Title HD"] && row["Title HD"]}
+                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -208,6 +234,9 @@ export default function EnhancedTable({ data, loaded }) {
         }
         label="Dense padding"
       />
+      <Button onClick={handleStopFlashing}>
+        {stopFlashing ? "Show" : "Hide"} Flashing
+      </Button>
     </Box>
   );
 }

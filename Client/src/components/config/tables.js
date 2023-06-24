@@ -31,6 +31,10 @@ export const eventsHeadCells = [
     id: "Urgency",
     label: "Urgency",
   },
+  {
+    id: "BrightStar",
+    label: "BrightStar",
+  },
 ];
 
 export const relationHeadCells = [

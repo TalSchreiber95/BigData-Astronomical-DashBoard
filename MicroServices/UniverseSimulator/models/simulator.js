@@ -76,6 +76,7 @@ const generateAstroEvent = () => {
     "Dec": 15, // degrees such as -16.7167 = -16° 43 // ### need to check what to do
     "Event Type": _.sampleSize(eventTypes, 1)[0],
     "Urgency": getRandomNumber(),
+    "Title HD": "temp", // pull random from redis
   };
 
   return { astro: astro, Topic: "astro" };

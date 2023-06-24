@@ -34,7 +34,7 @@ kafkaConsumer.on("data", function (msg) {
         });
       }
       if (newData.Topic === "astro") {
-        indexDocument(newData);
+        indexDocument(newData.astro);
       }
     }
   }

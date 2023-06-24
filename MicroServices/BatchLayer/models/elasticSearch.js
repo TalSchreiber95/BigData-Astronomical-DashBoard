@@ -1,7 +1,13 @@
 const { Client } = require("@elastic/elasticsearch");
 const client = new Client({ node: "http://localhost:9200" });
 
-async function searchDocuments({ eventType, telescope, fromDate, toDate }) {
+async function searchDocuments({
+  eventType,
+  telescope,
+  fromDate,
+  toDate,
+  starSearch,
+}) {
   const query = {
     bool: {
       must: [],
@@ -11,21 +17,21 @@ async function searchDocuments({ eventType, telescope, fromDate, toDate }) {
   eventType &&
     query.bool.must.push({
       match: {
-        "astro.Event Type.keyword": eventType,
+        "Event Type.keyword": eventType,
       },
     });
 
   telescope &&
     query.bool.must.push({
       match: {
-        "astro.Telescope's Name.keyword": telescope,
+        "Telescope's Name.keyword": telescope,
       },
     });
 
   fromDate &&
     query.bool.must.push({
       range: {
-        "astro.Date": {
+        Date: {
           gte: fromDate,
         },
       },
@@ -34,19 +40,28 @@ async function searchDocuments({ eventType, telescope, fromDate, toDate }) {
   toDate &&
     query.bool.must.push({
       range: {
-        "astro.Date": {
+        Date: {
           lte: toDate,
         },
       },
     });
 
+  starSearch &&
+    query.bool.must.push({
+      prefix: {
+        "Title HD.keyword": {
+          value: starSearch,
+          case_insensitive: true,
+        },
+      },
+    });
   try {
     const response = await client.search({
       index: "events",
       size: 1000,
       query: query,
     });
-    return response?.hits.hits.map((hit) => hit._source.astro);
+    return response?.hits.hits.map((hit) => hit._source);
   } catch (err) {
     // console.error(err);
     return null;

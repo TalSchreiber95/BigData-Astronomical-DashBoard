@@ -8,6 +8,7 @@ import {
   Card,
   Typography,
   Button,
+  TextField,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import DateSelector from "./DateSelector";
@@ -28,6 +29,8 @@ export default function EventPicker({
   setSelectedEventType,
   selectedTelescope,
   setSelectedTelescope,
+  starSearch,
+  setStarSearch,
   fromDate,
   toDate,
   setFromDate,
@@ -95,6 +98,12 @@ export default function EventPicker({
           })}
         </Select>
       </FormControl>
+      <TextField
+        label="Star"
+        variant="outlined"
+        value={starSearch}
+        onChange={(e) => setStarSearch(e.target.value)}
+      />
       <Tooltip title="Search">
         <IconButton color="info" onClick={onSearch}>
           <SearchIcon />
