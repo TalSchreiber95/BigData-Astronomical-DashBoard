@@ -89,17 +89,6 @@ const Dashboard = ({ data }) => {
           );
         })}
         <Grid item xs={12} sm={4} md={6}>
-          {/* {data["Sun Image Links"].map((sunImg) => (
-            <Box
-              component="img"
-              sx={{
-                height: 400,
-                width: 400,
-              }}
-              alt="Sun live picture"
-              src={sunImg}
-            />
-          ))} */}
           <ImageGallery images={data["Sun Image Links"]} />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12} sx={{ mt: 3 }}>
