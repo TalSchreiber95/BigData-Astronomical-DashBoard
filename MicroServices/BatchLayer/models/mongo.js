@@ -46,7 +46,7 @@ const Weather = mongoose.model(
 const AstroEvent = mongoose.model(
   "AstroEvent",
   Schema({
-    "Astroid's Id": Number,
+    "Event's Id": Number,
     "Telescope's Name": String,
     "Date": Date,
     "Time": String,

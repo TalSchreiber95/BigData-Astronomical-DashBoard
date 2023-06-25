@@ -1,5 +1,5 @@
 const axios = require("axios");
-const fs = require("fs");
+
 
 const cheerio = require("cheerio");
 const scrapeWeatherDataForAnalyze = async () => {
@@ -172,9 +172,6 @@ const getSunXRayActivitiesForAnalyze = async () => {
             const date = event.time_tag.slice(0, 10);
             return { date, timeTag, xRayRate, xRayEnergy, electron_correction };
         });
-
-        // Save the result data to sunXray.json
-        //     fs.writeFileSync("./controllers/sunXray.json", JSON.stringify(result));
 
         return result;
     } catch (error) {

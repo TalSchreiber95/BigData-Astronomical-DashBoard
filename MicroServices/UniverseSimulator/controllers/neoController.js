@@ -1,5 +1,6 @@
 const axios = require("axios");
 const kafkaProducer = require("../models/kafkaProducer");
+require("dotenv").config();
 
 let neoArrayHolder;
 let neoDataComparator = [];
@@ -9,7 +10,8 @@ const fetchJSONData = async () => {
   let endDate = new Date().toISOString().split("T")[0];
   startDate = getStartDate();
   console.log(`startDate= ${startDate} , endDate= ${endDate}`);
-  const apiKey = "DEMO_KEY";
+  let apiKey = "DEMO_KEY";
+  apiKey = process.env.NASA_API_KEY;
   const apiUrl = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=${apiKey}`;
 
   try {
@@ -81,7 +83,6 @@ const getStartDate = () => {
 
 const fetchFromApi = async () => {
   try {
-    clearInterval(interval1);
     const jsonData = await fetchJSONData();
     if (jsonData) {
       neoArrayHolder = convertJSONtoNEOArray(jsonData);
@@ -101,14 +102,6 @@ const fetchFromApi = async () => {
         console.log("neoDataComparator initialized successfully");
       }
 
-      // interval1 = setInterval(() => {
-      //   const neoGenerated = generateNeo();
-      //   console.log(neoGenerated);
-      //   if (neoGenerated !== null)
-      //     kafkaProducer.publish(neoGenerated, "events");
-      //   else clearInterval(interval1);
-      // }, 12 * 1000);
-      
       return { neo: neoArrayHolder, Topic: "neo" };
     }
   } catch (error) {
