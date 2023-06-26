@@ -14,6 +14,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import DateSelector from "./DateSelector";
 import eventTypes from "../config/eventTypes";
 import telescopes from "../config/telescopesList";
+import dayjs from "dayjs";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -23,6 +24,8 @@ const MenuProps = {
     },
   },
 };
+const today = dayjs();
+const yesterday = dayjs().subtract(1, "day");
 
 export default function EventPicker({
   selectedEventType,
@@ -38,10 +41,11 @@ export default function EventPicker({
   onSearch,
 }) {
   const handleClearFilter = () => {
-    setSelectedEventType(null);
-    setSelectedTelescope(null);
-    setFromDate(null);
-    setToDate(null);
+    setSelectedEventType("");
+    setSelectedTelescope("");
+    setStarSearch("");
+    setFromDate(yesterday);
+    setToDate(today);
   };
 
   return (
