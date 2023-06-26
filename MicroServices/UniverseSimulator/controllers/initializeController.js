@@ -10,10 +10,10 @@ initializeData = async (req, res) => {
     kafkaProducer.publish(await getSunInfoForAnalyze(), "events");
     kafkaProducer.publish(await getSunInfo(), "events");
     await getBrightStars();
-    res.status(200).send("data initialized successfully! ");
+    res.status(200).send("Data initialized successfully! ");
   } catch {
     (error) => {
-      res.status(500).send("error: data initialized faild!: \n", error);
+      res.status(500).send("error: Data initialized faild!: \n", error);
     };
   }
 };
