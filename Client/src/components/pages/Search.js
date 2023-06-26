@@ -1,32 +1,45 @@
 import React, { useState } from "react";
 import Page from "./Page";
-import BranchDatePicker from "../utils/BranchDatePicker";
-import OrdersTable from "../dataViews/OrdersTable";
+import EventPicker from "../utils/EventPicker";
+import EventsTable from "../dataViews/EventsTable";
 import dayjs from "dayjs";
 
-const Search = ({ orders, searchOrders, loaded }) => {
-  const [currentBranch, setCurrentBranch] = useState("");
-  const [date, setDate] = useState(() => dayjs("2023-03-08T00:00"));
+const today = dayjs();
+const yesterday = dayjs().subtract(1, "day");
+
+const Search = ({ events, searchEvents, loaded }) => {
+  const [selectedEventType, setSelectedEventType] = useState("");
+  const [selectedTelescope, setSelectedTelescope] = useState("");
+  const [starSearch, setStarSearch] = useState("");
+  const [fromDate, setFromDate] = useState(yesterday);
+  const [toDate, setToDate] = useState(today);
 
   const onSearch = () => {
-    searchOrders({ branch: currentBranch, date: date.format("YYYY-MM-DD") });
-  };
-
-  const showAllOrders = () => {
-    searchOrders();
+    searchEvents({
+      eventType: selectedEventType !== "" ? selectedEventType : undefined,
+      telescope: selectedTelescope !== "" ? selectedTelescope : undefined,
+      starSearch: starSearch !== "" ? starSearch : undefined,
+      fromDate: fromDate !== null ? fromDate.format("YYYY-MM-DD") : undefined,
+      toDate: toDate !== null ? toDate.format("YYYY-MM-DD") : undefined,
+    });
   };
 
   return (
-    <Page title='Search'>
-      <BranchDatePicker
-        currentBranch={currentBranch}
-        setCurrentBranch={setCurrentBranch}
-        date={date}
-        setDate={setDate}
+    <Page title="Search">
+      <EventPicker
+        selectedEventType={selectedEventType}
+        setSelectedEventType={setSelectedEventType}
+        selectedTelescope={selectedTelescope}
+        setSelectedTelescope={setSelectedTelescope}
+        starSearch={starSearch}
+        setStarSearch={setStarSearch}
+        fromDate={fromDate}
+        toDate={toDate}
+        setFromDate={setFromDate}
+        setToDate={setToDate}
         onSearch={onSearch}
-        showAllOrders={showAllOrders}
       />
-      <OrdersTable data={orders} loaded={loaded} />
+      <EventsTable data={events} loaded={loaded} />
     </Page>
   );
 };

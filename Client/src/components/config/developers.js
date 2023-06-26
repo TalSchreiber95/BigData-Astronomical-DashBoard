@@ -5,7 +5,8 @@ export const developers = [
     mail: "talSchreiber@outlook.com",
     linkedin: "https://www.linkedin.com/in/tal-schreiber/",
     github: "https://github.com/TalSchreiber95",
-    image: "https://avatars.githubusercontent.com/u/58589007?s=400&u=25021898454bbccd915a1c7072cf106a375834f9&v=4",
+    image:
+      "https://avatars.githubusercontent.com/u/58589007?s=400&u=25021898454bbccd915a1c7072cf106a375834f9&v=4",
   },
   {
     name: "Dor Yaakoby",
@@ -24,11 +25,11 @@ export const developers = [
     image: "https://avatars.githubusercontent.com/u/73485442?s=400&v=4",
   },
   {
-    name: "name4",
-    role: "role",
-    mail: "mail4",
-    linkedin: "link4",
-    github: "link4",
+    name: "Shay Peretz",
+    role: "Software Developre",
+    mail: "shayperetz6@gmail.com",
+    linkedin: "https://www.linkedin.com/in/shay-peretz-1b6360219/",
+    github: "https://github.com/shayperetz6",
     image: "link4",
   },
 ];
