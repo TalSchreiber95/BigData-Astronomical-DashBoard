@@ -72,7 +72,7 @@ async function indexDocument(document) {
   try {
     const response = await client.index({
       index: "events",
-      id: document["Astroid's Id"],
+      id: document["Event's Id"],
       document: document,
     });
     if (response.result == "created") {
