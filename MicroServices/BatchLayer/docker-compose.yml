@@ -11,6 +11,7 @@ services:
       - discovery.type=single-node
       - network.host=0.0.0.0
     mem_limit: 2g
-
+    volumes:
+      - ./es-volume:/usr/share/elasticsearch/data
 networks:
   esnet:
