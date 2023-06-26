@@ -162,11 +162,23 @@ const getSunXRayActivities = async () => {
 const getSunImageLink = async () => {
   try {
     const channels = [
-      "HMII",
-      "HMIIC",
-      "HMIIF",
+      "211193171",
+      "f_304_211_171_1024",
+      "f_094_335_193_1024",
+      "f_HMImag_171_1024",
+      "0304",
+      "0193",
+      "0171",
+      "0211",
+      "0131",
+      "0335",
+      "0094",
+      "1600",
+      "1700",
       "HMIB",
-      // Add more channels as needed
+      "HMIIF",
+      "HMIIC",
+      "HMII",
     ];
     const imagePromises = channels.map(async (channel) => {
       const encodedChannel = encodeURIComponent(channel);

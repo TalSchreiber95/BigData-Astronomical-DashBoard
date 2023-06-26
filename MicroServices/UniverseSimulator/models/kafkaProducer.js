@@ -13,7 +13,6 @@ const kafkaConfig = {
   debug: "generic,broker,security",
 };
 
-const ordersTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "orders";
 const eventsTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "events";
 const sunActivitiesTopic =
   process.env.CLOUDKARAFKA_TOPIC_PREFIX + "sunActivities";
@@ -24,14 +23,14 @@ const producer = new Kafka.Producer(kafkaConfig);
 producer.connect();
 producer.on("ready", (arg) =>
   console.log(
-    `producer ${arg.name} ready. topic: ${ordersTopic}, ${eventsTopic}, ${neoTopic}, ${sunActivitiesTopic}`
+    `producer ${arg.name} ready. topic: ${eventsTopic}, ${neoTopic}, ${sunActivitiesTopic}`
   )
 );
 
 producer.on("event.error", (err) => console.log(err));
 
 const publish = (data, topic) => {
-  if(data===undefined) return
+  if (data === undefined) return;
   let msg = new Buffer.from(JSON.stringify(data));
   topic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + topic;
   console.log("topic from server: ", data.Topic);

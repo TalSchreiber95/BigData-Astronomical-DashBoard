@@ -1,5 +1,5 @@
 const kafkaProducer = require("../models/kafkaProducer");
-const { generateAstroEvent } = require("../models/simulator");
+const generateAstroEvent = require("../models/simulator");
 
 let interval1 = -1;
 let eventsRate = 3;
@@ -13,9 +13,9 @@ const startSimulator = async (req, res) => {
   if (req.query.hasOwnProperty("eventsRate")) {
     eventsRate = req.query.eventsRate;
   }
-
-  interval1 = setInterval(() => {
-    kafkaProducer.publish(generateAstroEvent(), "events");
+  interval1 = setInterval(async () => {
+    const astroGenerated = await generateAstroEvent();
+    astroGenerated !== null && kafkaProducer.publish(astroGenerated, "events");
   }, eventsRate * 1000);
 
   status = `Simulator is Running.
@@ -26,7 +26,6 @@ const startSimulator = async (req, res) => {
 
 const stopSimulator = (req, res) => {
   clearInterval(interval1);
-  // clearInterval(interval2);
   isRunning = false;
   console.log("Simulator Stopped");
   res.send("Simulator Stopped");

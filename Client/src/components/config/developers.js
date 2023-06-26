@@ -2,7 +2,7 @@ export const developers = [
   {
     name: "Tal Schreiber",
     role: "Fullstack Developer",
-    mail: "talSchreiber@outlook.com",
+    mail: "TalSchreiber95@outlook.com",
     linkedin: "https://www.linkedin.com/in/tal-schreiber/",
     github: "https://github.com/TalSchreiber95",
     image:
@@ -10,10 +10,10 @@ export const developers = [
   },
   {
     name: "Dor Yaakoby",
-    role: "role",
-    mail: "mail2",
-    linkedin: "link2",
-    github: "link2",
+    role: "Backend Developer",
+    mail: "doryaakobi@gmail.com",
+    linkedin: "https://www.linkedin.com/in/dor-yaakoby-01a994201",
+    github: "https://github.com/Doryaakobi",
     image: "link2",
   },
   {

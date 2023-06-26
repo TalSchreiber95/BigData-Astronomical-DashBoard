@@ -21,7 +21,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const eventsTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "events";
-const ordersTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "orders";
 const sunActivitiesTopic =
   process.env.CLOUDKARAFKA_TOPIC_PREFIX + "sunActivities";
 const neoTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "neo";

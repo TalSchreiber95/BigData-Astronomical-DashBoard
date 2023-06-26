@@ -25,7 +25,7 @@ const getBrightStar = async () => {
     return null;
   }
 };
-const generateBrightStar = () => {
+const generateBrightStar = async () => {
   if (brightStarsArray && brightStarsArray.length > 0) {
     const randomIndex = Math.floor(Math.random() * brightStarsArray.length);
     return { selectedStar: brightStarsArray[randomIndex] };

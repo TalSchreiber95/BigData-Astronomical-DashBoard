@@ -1,7 +1,6 @@
 require("dotenv").config();
 const { KafkaConsumer } = require("node-rdkafka");
 
-
 const consumer = new KafkaConsumer({
   "group.id": "cloudkarafka",
   "metadata.broker.list": process.env.CLOUDKARAFKA_BROKERS.split(","),
@@ -13,16 +12,16 @@ const consumer = new KafkaConsumer({
   debug: "generic,broker,security",
 });
 
-const ordersTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "orders";
 const eventsTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "events";
-const sunActivitiesTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "sunActivities";
+const sunActivitiesTopic =
+  process.env.CLOUDKARAFKA_TOPIC_PREFIX + "sunActivities";
 const neoTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "neo";
 
 consumer
   .on("ready", (arg) => {
-    consumer.subscribe([ordersTopic, eventsTopic,neoTopic,sunActivitiesTopic]).consume();
+    consumer.subscribe([eventsTopic, neoTopic, sunActivitiesTopic]).consume();
     console.log(
-      `Consumer ${arg.name} ready. topics: ${ordersTopic}, ${eventsTopic}, ${neoTopic}, ${sunActivitiesTopic}`
+      `Consumer ${arg.name} ready. topics: ${eventsTopic}, ${neoTopic}, ${sunActivitiesTopic}`
     );
   })
   .on("disconnected", (arg) =>
