@@ -1,6 +1,7 @@
 const axios = require("axios");
-const fs = require("fs");
+
 const cheerio = require("cheerio");
+require("dotenv").config();
 
 const scrapeWeatherData = async () => {
   try {
@@ -151,9 +152,6 @@ const getSunXRayActivities = async () => {
       return { timeTag, xRayRate };
     });
 
-    // Save the result data to sunXray.json
-    //     fs.writeFileSync("./controllers/sunXray.json", JSON.stringify(result));
-
     return result;
   } catch (error) {
     console.error("Error fetching X-Ray activities:", error);
@@ -163,20 +161,37 @@ const getSunXRayActivities = async () => {
 
 const getSunImageLink = async () => {
   try {
-    const response = await axios.get(
-      "https://www.nasa.gov/mission_pages/sdo/the-sun-now/index.html"
-    );
-    const $ = cheerio.load(response.data);
-    let sunImageLink = $("div.dnd-drop-wrapper a").attr("href");
-    sunImageLink = [
-      "https://www.nasa.gov/sites/default/files/styles/full_width/public/thumbnails/image/pia19821-nustar_xrt_sun.jpg?itok=lUj3uP0I",
+    const channels = [
+      "HMII",
+      "HMIIC",
+      "HMIIF",
+      "HMIB",
+      // Add more channels as needed
     ];
-    return sunImageLink;
+    const imagePromises = channels.map(async (channel) => {
+      const encodedChannel = encodeURIComponent(channel);
+      const imageUrl = `https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_${encodedChannel}.jpg`;
+      try {
+        const response = await axios.get(imageUrl, {
+          responseType: "arraybuffer",
+        });
+        return { channel, error: false, imageUrl };
+      } catch (error) {
+        // console.error(`Error fetching ${channel} image:`, error);
+        return { channel, error: true };
+      }
+    });
+
+    let images = await Promise.all(imagePromises);
+    console.log("Sun images:", images);
+    images = images.map((img) => (img.error == false ? img.imageUrl : "null")).filter((img)=>img!=="null");
+    return images;
   } catch (error) {
     console.error("Error:", error);
     return null;
   }
 };
+
 
 const getSunInfo = async () => {
   const weatherData = await scrapeWeatherData();

@@ -1,6 +1,6 @@
 export const astroEventTableObject = {
           header: [
-            "Astroid's Id",
+            "Event's Id",
             "Telescope's Name",
             "Date",
             "Time",
