@@ -23,8 +23,8 @@ redis
 (async () => {
   await redis.connect();
   if (await redis.exists("events_data")) {
-    const ordersData = await redis.json.GET("events_data");
-    console.log("new ordersData: ", ordersData);
+    const data = await redis.json.GET("events_data");
+    console.log("new data: ", data);
   } else {
     const initialDataAwait =await initialData()
     redis.json.SET("events_data", "$", initialDataAwait);

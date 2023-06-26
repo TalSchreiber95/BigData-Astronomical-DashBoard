@@ -10,9 +10,6 @@ const scrapeWeatherData = async () => {
     const response = await axios.get(url);
     const html = response.data;
     const $ = cheerio.load(html);
-    const element = $(
-      "#WxuHourlyCard-main-74f43669-10ed-4577-a8c4-85ad9d041036"
-    );
     const hourDetails = [];
 
     for (let i = 1; i <= 24; i++) {

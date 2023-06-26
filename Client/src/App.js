@@ -14,7 +14,7 @@ function App() {
   const initializeData = async () => {
     await axios("http://localhost:4002/api/initialize")
       .then((res) => {
-        console.log(res.data);
+        console.log("res.data: ",res.data);
         // setStatus(res.data);
       })
       .catch((err) => console.error(err));
