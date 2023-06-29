@@ -30,6 +30,7 @@ export const developers = [
     mail: "shayperetz6@gmail.com",
     linkedin: "https://www.linkedin.com/in/shay-peretz-1b6360219/",
     github: "https://github.com/shayperetz6",
-    image: "link4",
+    image:
+      "https://avatars.githubusercontent.com/u/73098848?s=400&u=123148c92e39b012fdab03ebe6a2b1c936f2a422&v=4",
   },
 ];
