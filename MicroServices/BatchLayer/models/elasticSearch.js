@@ -2,11 +2,11 @@ const { Client } = require("@elastic/elasticsearch");
 const client = new Client({ node: "http://localhost:9200" });
 
 async function searchDocuments({
-  eventType,
-  telescope,
+  selectedEventTypes,
+  selectedTelescopes,
+  selectedStars,
   fromDate,
   toDate,
-  starSearch,
 }) {
   const query = {
     bool: {
@@ -14,21 +14,65 @@ async function searchDocuments({
     },
   };
 
-  eventType &&
+  const shouldEventTypes = [];
+  const shouldTelescopes = [];
+  const shouldStars = [];
+
+  if (Array.isArray(selectedEventTypes) && selectedEventTypes.length > 0) {
+    selectedEventTypes.forEach((eventType) => {
+      shouldEventTypes.push({
+        match: {
+          "Event Type.keyword": eventType,
+        },
+      });
+    });
+  }
+
+  if (Array.isArray(selectedTelescopes) && selectedTelescopes.length > 0) {
+    selectedTelescopes.forEach((telescope) => {
+      shouldTelescopes.push({
+        match: {
+          "Telescope's Name.keyword": telescope,
+        },
+      });
+    });
+  }
+
+  if (Array.isArray(selectedStars) && selectedStars.length > 0) {
+    selectedStars.forEach((star) => {
+      shouldStars.push({
+        match: {
+          "Title HD.keyword": star,
+        },
+      });
+    });
+  }
+
+  if (shouldEventTypes.length > 0) {
     query.bool.must.push({
-      match: {
-        "Event Type.keyword": eventType,
+      bool: {
+        should: shouldEventTypes,
       },
     });
+  }
 
-  telescope &&
+  if (shouldTelescopes.length > 0) {
     query.bool.must.push({
-      match: {
-        "Telescope's Name.keyword": telescope,
+      bool: {
+        should: shouldTelescopes,
       },
     });
+  }
 
-  fromDate &&
+  if (shouldStars.length > 0) {
+    query.bool.must.push({
+      bool: {
+        should: shouldStars,
+      },
+    });
+  }
+
+  if (fromDate) {
     query.bool.must.push({
       range: {
         Date: {
@@ -36,8 +80,9 @@ async function searchDocuments({
         },
       },
     });
+  }
 
-  toDate &&
+  if (toDate) {
     query.bool.must.push({
       range: {
         Date: {
@@ -45,17 +90,9 @@ async function searchDocuments({
         },
       },
     });
-
-  starSearch &&
-    query.bool.must.push({
-      prefix: {
-        "Title HD.keyword": {
-          value: starSearch,
-          case_insensitive: true,
-        },
-      },
-    });
+  }
   try {
+    console.log("11111", JSON.stringify(query));
     const response = await client.search({
       index: "events",
       size: 1000,
@@ -63,7 +100,7 @@ async function searchDocuments({
     });
     return response?.hits.hits.map((hit) => hit._source);
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     return null;
   }
 }
@@ -81,7 +118,7 @@ async function indexDocument(document) {
       // console.log("Document Index FAILED");
     }
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     return null;
   }
 }
