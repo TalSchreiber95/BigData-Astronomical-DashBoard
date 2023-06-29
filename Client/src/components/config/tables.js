@@ -1,6 +1,6 @@
 export const eventsHeadCells = [
   {
-    id: "Astroid's Id",
+    id: "Event's Id",
     label: "Event ID",
   },
   {

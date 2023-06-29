@@ -169,7 +169,7 @@ export default function EnhancedTable({ data, loaded }) {
                         }
                       >
                         <TableCell>
-                          {row["Astroid's Id"] && row["Astroid's Id"]}
+                          {row["Event's Id"] && row["Event's Id"]}
                         </TableCell>
                         <TableCell>
                           {row["Telescope's Name"] && row["Telescope's Name"]}

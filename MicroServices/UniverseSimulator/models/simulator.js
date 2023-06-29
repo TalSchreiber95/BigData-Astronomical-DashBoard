@@ -38,7 +38,7 @@ const generateAstroEvent = () => {
   const date = new Date(Date.UTC(year, month, day)).toJSON().split("T")[0]; // Get the current UTC date as a string
   const { selectedStar } =  generateBrightStar();
   const astro = {
-    "Astroid's Id": uuidv4(),
+    "Event's Id": uuidv4(),
     "Telescope's Name": _.sampleSize(telescopesList, 1)[0],
     "Date": date,
     "Time": time,

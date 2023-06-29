@@ -7,10 +7,8 @@ import ChartDetails from "../dataViews/ChartDetails";
 import { ChartDetailsConfig } from "../config/charts";
 import { CounterDetailsConfig } from "../config/counters";
 import ActionAreaCard from "../dataViews/ActionAreaCard";
-
+import ImageGallery from "../utils/ImageGallery"
 const Dashboard = ({ data }) => {
-
-
   const isImportentNeo = (row) => {
     return row["Potentially Hazardous"] === "Yes";
   };
@@ -90,16 +88,8 @@ const Dashboard = ({ data }) => {
             </Grid>
           );
         })}
-        <Grid  item xs={12} sm={4} md={6}>
-          <Box
-            component="img"
-            sx={{
-              height: 400,
-              width: 400,
-            }}
-            alt="Sun live picture"
-            src={data["Sun Image Links"][0]}
-          />
+        <Grid item xs={12} sm={4} md={6}>
+          <ImageGallery images={data["Sun Image Links"]} />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12} sx={{ mt: 3 }}>
           <GenericTable

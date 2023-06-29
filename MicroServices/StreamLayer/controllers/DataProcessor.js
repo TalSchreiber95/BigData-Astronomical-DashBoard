@@ -7,7 +7,7 @@ const processEventsData = (eventsData, newEvent) => {
   return newEventsData;
 };
 const makeText = (event) => {
-  let txt = "Astroid's Id: " + event["Astroid's Id"] + "\n";
+  let txt = "Event's Id: " + event["Event's Id"] + "\n";
   txt += "Telescope's Name: " + event["Telescope's Name"] + "\n";
   txt += "Date: " + event["Date"] + event["Time"] + "\n";
   txt += "Dec: " + event["Dec"] + " Ra: " + event["Ra"] + "\n";

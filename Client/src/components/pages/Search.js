@@ -2,21 +2,25 @@ import React, { useState } from "react";
 import Page from "./Page";
 import EventPicker from "../utils/EventPicker";
 import EventsTable from "../dataViews/EventsTable";
+import dayjs from "dayjs";
+
+const today = dayjs();
+const yesterday = dayjs().subtract(1, "day");
 
 const Search = ({ events, searchEvents, loaded }) => {
-  const [selectedEventType, setSelectedEventType] = useState(null);
-  const [selectedTelescope, setSelectedTelescope] = useState(null);
-  const [fromDate, setFromDate] = useState(null);
-  const [toDate, setToDate] = useState(null);
-  const [starSearch, setStarSearch] = useState(null);
+  const [selectedEventType, setSelectedEventType] = useState("");
+  const [selectedTelescope, setSelectedTelescope] = useState("");
+  const [starSearch, setStarSearch] = useState("");
+  const [fromDate, setFromDate] = useState(yesterday);
+  const [toDate, setToDate] = useState(today);
 
   const onSearch = () => {
     searchEvents({
-      eventType: selectedEventType !== null ? selectedEventType : undefined,
-      telescope: selectedTelescope !== null ? selectedTelescope : undefined,
+      eventType: selectedEventType !== "" ? selectedEventType : undefined,
+      telescope: selectedTelescope !== "" ? selectedTelescope : undefined,
+      starSearch: starSearch !== "" ? starSearch : undefined,
       fromDate: fromDate !== null ? fromDate.format("YYYY-MM-DD") : undefined,
       toDate: toDate !== null ? toDate.format("YYYY-MM-DD") : undefined,
-      starSearch: starSearch !== null ? starSearch : undefined,
     });
   };
 
