@@ -92,7 +92,6 @@ async function searchDocuments({
     });
   }
   try {
-    console.log("11111", JSON.stringify(query));
     const response = await client.search({
       index: "events",
       size: 1000,
