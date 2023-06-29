@@ -41,18 +41,11 @@ export default function EventPicker({
   onSearch,
 }) {
   const handleClearFilter = () => {
-<<<<<<< HEAD
-    setSelectedEventType(null);
-    setSelectedTelescope(null);
-    setFromDate(null);
-    setToDate(null);
-=======
     setSelectedEventType("");
     setSelectedTelescope("");
     setStarSearch("");
     setFromDate(yesterday);
     setToDate(today);
->>>>>>> 86c7a66870727f0c4d3a76d1076d49c7417e0d41
   };
 
   return (
