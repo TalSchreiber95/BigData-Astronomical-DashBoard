@@ -38,7 +38,7 @@ const ImageGallery = ({ images }) => {
         style={{
           position: "absolute",
           top: 0,
-          left: "10%",
+          left: "13%",
           transform: "translateX(-50%)",
           color: "white",
           textAlign: "center",
@@ -46,7 +46,17 @@ const ImageGallery = ({ images }) => {
         }}
       >
         <Typography variant="h6">
-          {currentImage?.split("_")[2]?.split(".jpg")[0]}
+          {currentImage?.split("_")[2]?.split(".jpg")[0]}{" "}
+        </Typography>{" "}
+        <Typography
+          variant="h6"
+          style={{
+            position: "absolute",
+            top: 30,
+            left: 0,
+          }}
+        >
+          {`${currentIndex + 1}/${images.length}`}
         </Typography>
       </div>
       <div
@@ -130,7 +140,17 @@ const ImageGallery = ({ images }) => {
             }}
           >
             <Typography variant="h6">
-              {currentImage?.split("_")[2]?.split(".jpg")[0]}
+              {currentImage?.split("_")[2]?.split(".jpg")[0]}{" "}
+            </Typography>{" "}
+            <Typography
+              variant="h6"
+              style={{
+                position: "absolute",
+                top: 30,
+                left: 0,
+              }}
+            >
+              {`${currentIndex + 1}/${images.length}`}
             </Typography>
           </div>
           <div

@@ -1,4 +1,4 @@
-const getBrightStar = require("../controllers/brightStar");
+const getBrightStars = require("../utils/brightStar");
 
 const createTimeList = () => {
   var currentTime = new Date();
@@ -15,14 +15,7 @@ const createTimeList = () => {
   return timeList;
 };
 
-const getBrightStarAwait = async () => {
-  const brightStar = await getBrightStar();
-  return brightStar;
-};
-
 const createEventData = async () => {
-  const brightStarData = await getBrightStarAwait();
-
   const eventData = {
     "Today's Events": 0,
     "Total of close asteroids (monthly)": 0,
@@ -170,10 +163,10 @@ const createEventData = async () => {
         "Magnitude",
         "Title HD",
       ],
-      body: brightStarData,
+      body: await getBrightStars(),
     },
   };
-  return eventData
+  return eventData;
 };
 
 module.exports = createEventData;

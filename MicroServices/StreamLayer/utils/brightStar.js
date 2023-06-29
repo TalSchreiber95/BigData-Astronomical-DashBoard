@@ -1,8 +1,6 @@
 const axios = require("axios");
 
-let brightStarsArray;
-
-const getBrightStar = async () => {
+const getBrightStars = async () => {
   try {
     const response = await axios.get(
       "https://raw.githubusercontent.com/aduboisforge/Bright-Star-Catalog-JSON/master/BSC.json"
@@ -19,17 +17,12 @@ const getBrightStar = async () => {
       Magnitude: star["MAG"],
       "Title HD": star["Title HD"],
     }));
+
     return brightStarsArray;
   } catch (error) {
     console.error("Error fetching the BrightStar.json file:", error.message);
     return null;
   }
 };
-const generateBrightStar = () => {
-  if (brightStarsArray && brightStarsArray.length > 0) {
-    const randomIndex = Math.floor(Math.random() * brightStarsArray.length);
-    return { selectedStar: brightStarsArray[randomIndex] };
-  }
-  return null;
-};
-module.exports = { getBrightStar, generateBrightStar };
+
+module.exports = getBrightStars;

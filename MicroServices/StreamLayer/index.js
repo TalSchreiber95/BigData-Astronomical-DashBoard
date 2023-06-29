@@ -14,18 +14,13 @@ const {
   processEventsData,
   processNeoData,
   processSunInfo,
-} = require("./controllers/DataProcessor.js");
+} = require("./utils/DataProcessor.js");
 
 app.use(cors({}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const eventsTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "events";
-const ordersTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "orders";
-const sunActivitiesTopic =
-  process.env.CLOUDKARAFKA_TOPIC_PREFIX + "sunActivities";
-const neoTopic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + "neo";
-
 const io = new Server(server, { cors: {} });
 
 io.on("connection", async (socket) => {

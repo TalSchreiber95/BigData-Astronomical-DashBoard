@@ -42,20 +42,6 @@ const Weather = mongoose.model(
 );
 
 
-// AstroEvent model
-const AstroEvent = mongoose.model(
-  "AstroEvent",
-  Schema({
-    "Event's Id": Number,
-    "Telescope's Name": String,
-    "Date": Date,
-    "Time": String,
-    "Ra": Number, // 0-24 hours might be better as string 6.75 = 6h 45m
-    "Dec": Number, // degrees such as -16.7167 = -16° 43
-    "Event Type": String, // can have multiple consequences
-    "Urgency": Number, // between 1-5
-  })
-);
 
 // Connection
 const url = process.env.MONGO_URL;
