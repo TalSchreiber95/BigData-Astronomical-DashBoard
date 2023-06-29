@@ -8,31 +8,28 @@ const today = dayjs();
 const yesterday = dayjs().subtract(1, "day");
 
 const Search = ({ events, searchEvents, loaded }) => {
-  const [selectedEventType, setSelectedEventType] = useState("");
-  const [selectedTelescope, setSelectedTelescope] = useState("");
-  const [starSearch, setStarSearch] = useState("");
+  const [selectedEventTypes, setSelectedEventTypes] = useState([]);
+  const [selectedTelescopes, setSelectedTelescopes] = useState([]);
+  const [selectedStars, setSelectedStars] = useState([]);
   const [fromDate, setFromDate] = useState(yesterday);
   const [toDate, setToDate] = useState(today);
 
   const onSearch = () => {
     searchEvents({
-      eventType: selectedEventType !== "" ? selectedEventType : undefined,
-      telescope: selectedTelescope !== "" ? selectedTelescope : undefined,
-      starSearch: starSearch !== "" ? starSearch : undefined,
-      fromDate: fromDate !== null ? fromDate.format("YYYY-MM-DD") : undefined,
-      toDate: toDate !== null ? toDate.format("YYYY-MM-DD") : undefined,
+      selectedEventTypes,
+      selectedTelescopes,
+      selectedStars,
+      fromDate: fromDate.format("YYYY-MM-DD"),
+      toDate: toDate.format("YYYY-MM-DD"),
     });
   };
 
   return (
     <Page title="Search">
       <EventPicker
-        selectedEventType={selectedEventType}
-        setSelectedEventType={setSelectedEventType}
-        selectedTelescope={selectedTelescope}
-        setSelectedTelescope={setSelectedTelescope}
-        starSearch={starSearch}
-        setStarSearch={setStarSearch}
+        setSelectedEventTypes={setSelectedEventTypes}
+        setSelectedTelescopes={setSelectedTelescopes}
+        setSelectedStars={setSelectedStars}
         fromDate={fromDate}
         toDate={toDate}
         setFromDate={setFromDate}

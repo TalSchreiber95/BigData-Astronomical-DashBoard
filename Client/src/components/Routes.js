@@ -29,13 +29,12 @@ export default function Routes() {
 
   useEffect(() => {
     socket.on("events_data", (res) => {
-      console.log("res from server= ",res);
+      console.log("res from server= ", res);
       setData(res);
     });
   }, [socket]);
 
   const searchEvents = async (query) => {
-    // query && console.log(query);
     setEvents({ message: "Loading..." });
     setSearchLoaded(false);
     await axios("http://localhost:4000/api/eventsByDate", {
