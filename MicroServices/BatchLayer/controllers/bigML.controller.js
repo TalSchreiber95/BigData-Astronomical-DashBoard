@@ -135,12 +135,12 @@ const extractRules = (rules, items, fields) => {
 
     for (let i = 0; i < antecedent.length; ++i) {
       if (fields[items[antecedent[i]].field_id].optype == "categorical"){
-          antecedents += fields[items[antecedent[i]].field_id].name;
+          antecedents += convertName(fields[items[antecedent[i]].field_id].name);
           antecedents +=  " = " + items[antecedent[i]].name;
       }
       else{
           if (items[antecedent[i]].bin_start != null) antecedents += items[antecedent[i]].bin_start + " < ";
-          antecedents += fields[items[antecedent[i]].field_id].name;
+          antecedents += convertName(fields[items[antecedent[i]].field_id].name);
           if (items[antecedent[i]].bin_end != null) antecedents +=  " <= " + items[antecedent[i]].bin_end;
      }
 
@@ -148,19 +148,19 @@ const extractRules = (rules, items, fields) => {
     }
     for (let i = 0; i < consequent.length; ++i) {
       if (fields[items[consequent[i]].field_id].optype == "categorical"){
-          consequents += fields[items[consequent[i]].field_id].name;
+          consequents += convertName(fields[items[consequent[i]].field_id].name);
           consequents +=  " = " + items[consequent[i]].name;
       }
       else{
           if (items[consequent[i]].bin_start != null) consequents += items[consequent[i]].bin_start + " < ";
-          consequents += fields[items[consequent[i]].field_id].name;
+          consequents += convertName(fields[items[consequent[i]].field_id].name);
           if (items[consequent[i]].bin_end != null) consequents +=  " <= " + items[consequent[i]].bin_end;
 
           if (i < consequent.length - 1) consequents += ", ";
         }
     }
-    const support = rules[i].support[0] * 100 + "%";
-    const confidence = rules[i].confidence * 100 + "%";
+    const support = (rules[i].support[0] * 100).toFixed(2) + "%";
+    const confidence = (rules[i].confidence * 100).toFixed(2) + "%";
     const count = rules[i].support[1];
     sets.push({
       antecedent: antecedents,
@@ -172,6 +172,25 @@ const extractRules = (rules, items, fields) => {
   }
   return sets;
 };
+
+const nameDictionary = {
+  "precip": "Precip",
+  "condition": "Condition",
+  "cloudPercentage": "Cloud Percentage",
+  "uvLevel" : "UV Level",
+  "temperature" : "Temperature",
+  "humidity" : "Humidity",
+  "wind" : "Wind",
+  "rainCm" : "CM of Rain",
+  "xRayRate" : "X-Ray Rate",
+  "xRayEnergy" : "X-Ray Energy",
+  "electron_correction" : "Electron Correction",
+};
+
+function convertName(name) {
+  const convertedName = nameDictionary[name];
+  return convertedName ? convertedName : name;
+}
 
 const writeMatchingDataToCSV = (weatherData, sunXRayActivities) => {
   console.log("Writing matching data to CSV");
