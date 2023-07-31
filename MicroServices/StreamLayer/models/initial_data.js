@@ -20,7 +20,7 @@ const createEventData = async () => {
     "Today's Events": 0,
     "Total of close asteroids (monthly)": 0,
     "Total of close asteroids (daily)": 0,
-    "Sun Image Links": [""],
+    "Sun Image Links": [],
     "Last Event": {
       title: "",
       img: "",

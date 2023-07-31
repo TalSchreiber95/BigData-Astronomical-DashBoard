@@ -29,7 +29,7 @@ producer.on("ready", (arg) =>
 
 producer.on("event.error", (err) => console.log(err));
 
-const publish = (data, topic) => {
+const publish = (data, topic="events") => {
   if (data === undefined) return;
   let msg = new Buffer.from(JSON.stringify(data));
   topic = process.env.CLOUDKARAFKA_TOPIC_PREFIX + topic;

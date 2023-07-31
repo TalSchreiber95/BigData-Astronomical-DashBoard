@@ -59,7 +59,7 @@ const convertJSONtoNEOArray = (jsonData) => {
   return neoArray;
 };
 
-const getStartDate = () => {
+const getStartDate = () => { // Get week before
   const currentDate = new Date();
   let startDate;
 

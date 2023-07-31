@@ -15,7 +15,7 @@ const startSimulator = async (req, res) => {
   }
   interval1 = setInterval(async () => {
     const astroGenerated = await generateAstroEvent();
-    astroGenerated !== null && kafkaProducer.publish(astroGenerated, "events");
+    astroGenerated !== null && kafkaProducer.publish(astroGenerated);
   }, eventsRate * 1000);
 
   status = `Simulator is Running.

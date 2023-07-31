@@ -6,9 +6,9 @@ const kafkaProducer = require("../models/kafkaProducer");
 
 initializeData = async (req, res) => {
   try {
-    kafkaProducer.publish(await fetchFromApi(), "events");
-    kafkaProducer.publish(await getSunInfoForAnalyze(), "events");
-    kafkaProducer.publish(await getSunInfo(), "events");
+    kafkaProducer.publish(await fetchFromApi());
+    kafkaProducer.publish(await getSunInfoForAnalyze());
+    kafkaProducer.publish(await getSunInfo());
     await getBrightStars();
     res.status(200).send("Data initialized successfully! ");
   } catch {

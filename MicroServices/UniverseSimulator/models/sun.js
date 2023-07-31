@@ -159,10 +159,22 @@ const getSunXRayActivities = async () => {
 const getSunImageLink = async () => {
   try {
     const channels = [
-      "211193171",
+      "f_HMImag_171pfss_1024",
+      "f_HMImag_171_1024",
+      "1700pfss",
+      "0131pfss",
+      "0171pfss",
+      "0304pfss",
+      "0193pfss",
+      "HMIIF",
+      "HMIIC",
+      "HMII",
+      "HMID",
+      "HMIBpfss",
+      "HMIB",
       "f_304_211_171_1024",
       "f_094_335_193_1024",
-      "f_HMImag_171_1024",
+      "211193171",
       "0304",
       "0193",
       "0171",
@@ -172,14 +184,12 @@ const getSunImageLink = async () => {
       "0094",
       "1600",
       "1700",
-      "HMIB",
-      "HMIIF",
-      "HMIIC",
-      "HMII",
     ];
     const imagePromises = channels.map(async (channel) => {
       const encodedChannel = encodeURIComponent(channel);
-      const imageUrl = `https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_${encodedChannel}.jpg`;
+      let imageUrl = `https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_${encodedChannel}.jpg`;
+      if (channel.startsWith("f"))
+        imageUrl = `https://sdo.gsfc.nasa.gov/assets/img/latest/${encodedChannel}.jpg`;
       try {
         const response = await axios.get(imageUrl, {
           responseType: "arraybuffer",
@@ -193,14 +203,15 @@ const getSunImageLink = async () => {
 
     let images = await Promise.all(imagePromises);
     console.log("Sun images:", images);
-    images = images.map((img) => (img.error == false ? img.imageUrl : "null")).filter((img)=>img!=="null");
+    images = images
+      .map((img) => (img.error == false ? img.imageUrl : "null"))
+      .filter((img) => img !== "null");
     return images;
   } catch (error) {
     console.error("Error:", error);
     return null;
   }
 };
-
 
 const getSunInfo = async () => {
   const weatherData = await scrapeWeatherData();

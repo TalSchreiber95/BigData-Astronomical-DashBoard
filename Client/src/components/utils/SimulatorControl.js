@@ -63,6 +63,9 @@ const SimulatorControl = ({ open, setOpen }) => {
 
   return (
     <Dialog open={open} onClose={handleClose}>
+       <Button variant="outlined" onClick={handleClose}>
+          Close
+        </Button>
       <DialogTitle variant="h5">Simulator Controller</DialogTitle>
       <DialogContent>
         <DialogContentText variant="subtitle">
