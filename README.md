@@ -1,10 +1,16 @@
-<div class="min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap">
+<h3>System Architecture Diagram</h3>
+
+![alt text](https://gcdnb.pbrd.co/images/8U4pXea5TD8z.jpg?o=1)
+
+<div class="min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap"> 
   <div class="markdown prose w-full break-words dark:prose-invert dark">
     <h1>Astronomical Dashboard Project!</h1>
     <p>Welcome to the Astronomical-DashBoard! This repository contains the code for a microservices-based project that implements a comprehensive model of Astronomical details. The dashboard provides live information, interactive charts, and prediction abilities based on machine learning. By leveraging technologies such as React, Redis, Kafka, Elastic Search, MongoDB, Sockets, and BigML, this project enables real-time data processing and generates valuable insights. Read on to learn how to get started with the project and explore the fascinating world of celestial objects and events.</h2>
     <p>The project is built on a microservices architecture, which allows for modularity and flexibility in development and deployment. The architecture is composed of the following microservices:</p>
-    <h3>Client Display</h3>
-    <p>The Client Display subsystem is responsible for rendering the dashboard and displaying real-time data streams and precomputed views. It is built on the React framework and uses Socket.IO to communicate with the Stream Layer subsystem and HTTP requests to communicate with the Batch Layer subsystem. The dashboard provides a visual representation of real-time astronomical data and insights generated from precomputed views.</p>
+
+    
+<h3>Client Display</h3>
+<p>The Client Display subsystem is responsible for rendering the dashboard and displaying real-time data streams and precomputed views. It is built on the React framework and uses Socket.IO to communicate with the Stream Layer subsystem and HTTP requests to communicate with the Batch Layer subsystem. The dashboard provides a visual representation of real-time astronomical data and insights generated from precomputed views.</p>
     <h3>Stream Layer</h3>
     <p>The Stream Layer subsystem is responsible for processing real-time data streams and providing up-to-date information to the dashboard. It uses Redis on Docker and a Kafka consumer on the cloud to ingest and process data streams in real-time. It also uses the Socket.IO protocol to communicate with the Client Display subsystem and provide real-time updates to the dashboard.</p>
     <h3>Batch Layer</h3>
